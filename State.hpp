@@ -1,7 +1,6 @@
 #ifndef STATE_HPP
 #define STATE_HPP
 #define STEPS 1000
-#define TIME_BEFORE_STATE_BECOME_SAFE 20
 #define TIME_FOR_DANGEROUS_STATE 2
 #include <list>
 #include <vector>
@@ -17,6 +16,7 @@ class State
 	std::list<int> elementInState(void);
 	State intersection(State st);
 	State difference(State st);
-	int levenshteinDistance(State st);
+	int levenshteinDistance(State& st);
+	void print(void);
 };
 #endif
