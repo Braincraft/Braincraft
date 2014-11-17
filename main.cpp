@@ -15,12 +15,14 @@ int main()
 	std::cout << "Hello world" << std::endl;
 	std::vector<int> unColored;
 	std::vector<int> unColored1;
+	unColored.push_back(3);
 	unColored.push_back(5);
-	//unColored.push_back(8);
+	unColored.push_back(8);
+	unColored1.push_back(3);
+	unColored1.push_back(5);
 	unColored1.push_back(8);
-	unColored1.push_back(7);
 	State unColoredState(unColored);
-	State unColoredState1(unColored1);
+	//State unColoredState1(unColored1);
 	float prec;
 	//std::cout << unColoredState.levenshteinDistance(unColoredState1) << std::endl;
 	Memory* memory = createMemory();

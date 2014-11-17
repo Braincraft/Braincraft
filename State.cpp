@@ -36,14 +36,18 @@ State State::difference(State st)
 
 int State::levenshteinDistance(State& st)
 {
+	print();
+	st.print();
 	std::vector < std::vector < int >>d(blockNearbyField.size() + 1, std::vector < int >(st.blockNearbyField.size() + 1, 0));
 	unsigned int i, j, cost;
-	for(i = 0; i < blockNearbyField.size(); i++)
+	//Start at 1 because the first is already at 0
+	for(i = 1; i <= blockNearbyField.size(); i++)
 		d[i][0] = i;
-	for(j = 0; j < st.blockNearbyField.size(); j++)
+	//Start at 1 because the first is already at 0
+	for(j = 1; j <= st.blockNearbyField.size(); j++)
 		d[0][j] = j;
 	auto it = blockNearbyField.begin();
-	auto jt = st.blockNearbyField.begin();
+	int tab[3];
 	//for(i = 0; i < d.size();i++)
 	//{
 		//for(j = 0; j < d[i].size(); j++)
@@ -51,15 +55,19 @@ int State::levenshteinDistance(State& st)
 		//std::cout << std::endl;
 	//}
 	//std::cout << std::endl;
-	for(i = 1; i < blockNearbyField.size()+1; i++, it++)
+	for(i = 1; i <= blockNearbyField.size(); i++, it++)
 	{
-		for(j = 1; j < st.blockNearbyField.size()+1; j++, jt++)
+		auto jt = st.blockNearbyField.begin();
+		for(j = 1; j <= st.blockNearbyField.size(); j++, jt++)
 		{
 			if(*it == *jt)
 				cost = 0;
 			else
 				cost = 1;
-			d[i][j] = min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+			tab[0] = d[i-1][j] + 1;
+			tab[1] = d[i][j-1] + 1;
+			tab[2] = d[i-1][j-1] + cost;
+			d[i][j] = min(tab, 3);
 		}
 	}
 	//for(i = 0; i < d.size();i++)
@@ -71,13 +79,13 @@ int State::levenshteinDistance(State& st)
 	return d[blockNearbyField.size()][st.blockNearbyField.size()];
 }
 
-int State::min(int i1, int i2, int i3)
+int State::min(int const * tab, const int size)
 {
-	if(i1 <= i2 && i1 <= i3)
-		return i1;
-	if(i2 <= i1 && i2 <= i3)
-		return i2;
-	return i3;
+	int smallest = tab[0];
+	for(int i = 1; i < size; i++)
+		if(tab[i] < smallest)
+			smallest = tab[i];
+	return smallest;
 }
 
 
