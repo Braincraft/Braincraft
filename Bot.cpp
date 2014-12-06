@@ -1,10 +1,13 @@
 #include "Bot.hpp"
 #include <vector>
+#include "Thalamus.hpp"
 
 using botplug::Block;
 
 int Bot::brainDo() {
 
+	Thalamus t;
+	t.print();
 
      // The bot-sampling-time must be incremented at each step
      fprintf(stderr, "Platypus It is good to be alive, Time = %d.\n", botSamplingTime++);

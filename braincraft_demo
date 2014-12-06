@@ -1,0 +1,31 @@
+Before starting make sure you have :
+- JDK 7
+- Qt4 (qt4-qmake libqt4-gui libqt4-dev)
+- LibX11
+- xterm or gnome-terminal
+- xrandr, sed, awk, nmap
+- At least git, but it would be better with svn
+- Enough RAM (>1.5Go)
+- Enough disk space (~1Go)
+- A backup of your ~/.minecraft
+
+svn checkout svn://scm.gforge.inria.fr/svnroot/virtualenaction/release
+cd release/bot/brainnybot
+cp Script/* . 
+sh create-bot.sh /an/absolue/path/to/the/new/bot
+replace "uname -i" by "uname - a" line 23 in the file src/GUI/GUIScript.pro
+replace line 38 by "$$files($${SRC}/*.hpp) \" in the file src/GUI/GUIScript.pro
+replace line 61 by "$$files($${SRC}/*.cpp) \" in the file src/GUI/GUIScript.pro
+comment line 31 in src/console/main.cpp
+cd ../../
+If you don't have yum, dpkg nor zypper, comment line 272 and 274 in startup.sh
+sh startup.sh -r
+sh startup.sh -s -c 
+cd /an/absolue/path/to/the/new/bot
+cd Bot
+rm -rf braincode
+git clone https://github.com/Braincraft/Braincraft.git braincode
+make
+build/UI 127.0.0.1 25561 mnemosyne
+
+Enjoy !!!
