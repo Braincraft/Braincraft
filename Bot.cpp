@@ -1,11 +1,19 @@
 #include "Bot.hpp"
 #include <vector>
 #include "Thalamus.hpp"
+#include "Action_braincraft.hpp"
 
 using botplug::Block;
 
-int Bot::brainDo() {
+void Bot::doAction(braincraft::Action const& action)
+{
+	Bot::setJump(action.getJump());
+	Bot::setBodyRotation(action.getRotation());
+	Bot::setBodyTranslation(action.getSpeed(), action.getOrientation());
+	Bot::setIngest(action.getEat());
+}
 
+int Bot::brainDo() {
 	Thalamus t;
 	t.print();
 
