@@ -12,7 +12,7 @@ class Action
 	bool eat;
 	void randomize(void);	
 	public:
-		Action(bool random = true);
+		Action(bool random = false);
 		double getSpeed(void) const;
 		void setSpeed(double const speed);
 		double getOrientation(void) const;
