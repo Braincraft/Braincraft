@@ -10,8 +10,9 @@ class Action
 	double rotation;
 	bool jump;
 	bool eat;
-	
+	void randomize(void);	
 	public:
+		Action(bool random = true);
 		double getSpeed(void) const;
 		void setSpeed(double const speed);
 		double getOrientation(void) const;

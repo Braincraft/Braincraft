@@ -1,6 +1,14 @@
 #include "Action_braincraft.hpp"
 namespace braincraft
 {
+Action::Action(bool random)
+{
+	if(random)
+		randomize();
+}
+void Action::randomize(void)
+{
+}
 double Action::getSpeed(void) const
 {
 	return speed;
