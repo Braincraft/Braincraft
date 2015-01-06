@@ -1,6 +1,8 @@
 #ifndef ACTION_BRAINCRAFT_HPP
 #define ACTION_BRAINCRAFT_HPP
 
+#include <stdlib.h>
+
 namespace braincraft
 {
 class Action

@@ -8,6 +8,33 @@ Action::Action(bool random)
 }
 void Action::randomize(void)
 {
+  double const high = 10;
+  double const speed = 10;
+  int randChoice = rand() %100;
+  
+  
+  if(randChoice < 10) {//eat something
+    setEat(true);
+    //sleep(2); Todo: How can we sleep without sleeping the process.
+    setEat(false);
+  }
+  else if(randChoice <30) {//Walk forward
+    setSpeed(speed);
+  }
+  else if(randChoice <50) {//Change orientation
+    double randOrientation = rand() %360;
+    setOrientation(randOrientation);
+  }
+
+  else if(randChoice <60) {//Jump
+    setJump(high);
+  }
+
+  else {//stop everything
+    setSpeed(0);
+    setRotation(0);
+    setEat(false);
+  }
 }
 double Action::getSpeed(void) const
 {
