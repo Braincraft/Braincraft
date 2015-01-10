@@ -1,4 +1,6 @@
 #pragma once
+#include <stdlib.h>
+
 namespace braincraft
 {
 class Action
