@@ -4,6 +4,7 @@
 
 #include "BotAPI.hpp"
 #include "State.hpp"
+#include "Thalamus.hpp"
 
 using botplug::BotAPI;
 //class Action_braincraft;
@@ -15,6 +16,7 @@ class Bot : public BotAPI
 {
 	private:
 		int n;
+		Thalamus thalamus;
 		/**
 		 * @brief FR : Fonction d'initialisation du bot. / EN : bot's initialization function
 		 */

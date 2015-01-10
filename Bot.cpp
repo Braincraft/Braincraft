@@ -1,6 +1,5 @@
 #include "Bot.hpp"
 #include <vector>
-#include "Thalamus.hpp"
 #include "Action_braincraft.hpp"
 
 using botplug::Block;
@@ -15,9 +14,6 @@ void Bot::doAction(braincraft::Action const& action)
 
 int Bot::brainDo()
 {
-	Thalamus t;
-	t.print();
-
 	// The bot-sampling-time must be incremented at each step
 	fprintf(stderr, "Platypus It is good to be alive, Time = %d.\n", botSamplingTime++);
 
@@ -26,11 +22,10 @@ int Bot::brainDo()
 	// dump work but comment because is too verbose to let it by default
 	//dump();
 
-	// Random movement parameters
-	double speed = frand_a_b(1, 2), orientation = frand_a_b(0, 360), rotation = frand_a_b(-90, 90);
-	Bot::setBodyRotation(rotation);
-	Bot::setBodyTranslation(speed, orientation);
-
+	State currentState = new State();
+	inputCurrentState(currentState);
+	thalamus.newState(currentState);
+	//outputCurrentState(currentState); //Find a way to do action
 	Bot::nTour++;
 
 	return 1;
