@@ -1,17 +1,21 @@
 #include "Bot.hpp"
 #include <vector>
-#include "Action_braincraft.hpp"
+#include "Thalamus.hpp"
 
 using botplug::Block;
 
-void Bot::doAction(braincraft::Action const& action)
+Bot::Bot() : BotAPI()
 {
-	Bot::setJump(action.getJump());
-	Bot::setBodyRotation(action.getRotation());
-	Bot::setBodyTranslation(action.getSpeed(), action.getOrientation());
-	Bot::setIngest(action.getEat());
+	initBot();
 }
-
+Bot::Bot(const std::string file) : BotAPI(file)
+{
+	initBot();
+}
+Bot::Bot(const std::string addr, const unsigned int port, const std::string login) : BotAPI(addr,port,login)
+{
+	initBot();
+}
 int Bot::brainDo()
 {
 	// The bot-sampling-time must be incremented at each step
@@ -24,7 +28,7 @@ int Bot::brainDo()
 
 	State currentState = new State();
 	inputCurrentState(currentState);
-	thalamus.newState(currentState);
+	thalamus->newState(currentState);
 	//outputCurrentState(currentState); //Find a way to do action
 	Bot::nTour++;
 
@@ -121,7 +125,12 @@ void Bot::dump(const std::vector<botplug::item>& items, const std::vector<bool>&
 // Manage the internal bot-sampling-time
 void Bot::initBot()
 {
+	thalamus = new braincraft::Thalamus(*this);
 	botMaxSamplingTime = 0;
+}
+Bot::~Bot()
+{
+	delete thalamus;
 }
 bool Bot::stopCondition() const
 {

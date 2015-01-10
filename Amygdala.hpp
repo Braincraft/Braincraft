@@ -1,6 +1,4 @@
-#ifndef AMYGDALA_HPP
-#define AMYGDALA_HPP
-
+#pragma once
 #include "Hypothalamus.hpp"
 class State;
 
@@ -8,7 +6,5 @@ class Amygdala
 {
 	Hypothalamus hypothalamus;
 	public:
-		bool isImportant(State& state);
+		State* isImportant(State& state);
 };
-
-#endif
