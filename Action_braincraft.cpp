@@ -15,8 +15,6 @@ void Action::randomize(void)
   
   if(randChoice < 10) {//eat something
     setEat(true);
-    //sleep(2); Todo: How can we sleep without sleeping the process.
-    setEat(false);
   }
   else if(randChoice <30) {//Walk forward
     setSpeed(speed);
@@ -33,7 +31,6 @@ void Action::randomize(void)
   else {//stop everything
     setSpeed(0);
     setRotation(0);
-    setEat(false);
   }
 }
 double Action::getSpeed(void) const
