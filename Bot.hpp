@@ -3,6 +3,7 @@
 #define STEPS 1000
 
 #include "BotAPI.hpp"
+#include "State.hpp"
 
 using botplug::BotAPI;
 //class Action_braincraft;
@@ -26,6 +27,11 @@ class Bot : public BotAPI
 		// for pixel view
 		// Defines the internal bot-sampling-time incremented at each step
 		unsigned int botSamplingTime = 0, botMaxSamplingTime = 1000;
+		void inputCurrentState(State& currentState);
+		void inputCurrentState(State& currentSubState, const std::vector<botplug::Block>& blocks);
+		void inputCurrentState(State& currentSubState, const std::vector<botplug::item>& items);
+		void inputCurrentState(State& currentSubState, const std::vector<botplug::Entity>& entities);
+		void outputCurrentState(State& currentState);
 		static void dump(const std::vector<botplug::Block>& blocks);
 		static void dump(const botplug::Block& block);
 		static void dump(const std::vector<botplug::item>& items, const std::vector<bool>& slots);

@@ -1,6 +1,4 @@
-#ifndef ACTION_BRAINCRAFT_HPP
-#define ACTION_BRAINCRAFT_HPP
-
+#pragma once
 namespace braincraft
 {
 class Action
@@ -25,4 +23,3 @@ class Action
 		void setEat(bool const eat);
 };
 }
-#endif
