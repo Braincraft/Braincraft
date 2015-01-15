@@ -1,5 +1,6 @@
 #include "Bot.hpp"
 #include <vector>
+#include "config.hpp"
 #include "Thalamus.hpp"
 
 using botplug::Block;
@@ -139,49 +140,49 @@ bool Bot::stopCondition() const
 void Bot::inputCurrentState(State& currentState)
 {
 	currentState.reset("");
-	currentState["now"]["time-step"] = botSamplingTime;
-	currentState["now"]["real-time"] = (unsigned int) time(NULL);
-	currentState["world"] = getWorld();
+	currentState[IDX_NOW][IDX_TIME_STEP] = botSamplingTime;
+	currentState[IDX_NOW][IDX_REAL_TIME] = (unsigned int) time(NULL);
+	currentState[IDX_WORLD] = getWorld();
 	// Position/Orientation
-	currentState["sensation"]["location"]["position"]["x"] = getPosition()._x;
-	currentState["sensation"]["location"]["position"]["y"] = getPosition()._y;
-	currentState["sensation"]["location"]["position"]["z"] = getPosition()._z;
-	currentState["sensation"]["location"]["orientation"]["yaw"] = getDirection()._yaw;
-	currentState["sensation"]["location"]["orientation"]["pitch"] = getDirection()._pitch;
+	currentState[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_X] = getPosition()._x;
+	currentState[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_Y] = getPosition()._y;
+	currentState[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_Z] = getPosition()._z;
+	currentState[IDX_SENSATION][IDX_LOCATION][IDX_ORIENTATION][IDX_YAW] = getDirection()._yaw;
+	currentState[IDX_SENSATION][IDX_LOCATION][IDX_ORIENTATION][IDX_PITCH] = getDirection()._pitch;
 	// Vital variables
-	currentState["sensation"]["vital"]["health"] = getHealth();
-	currentState["sensation"]["vital"]["food"] = getFood();
-	currentState["sensation"]["vital"]["water"] = getWater();
-	currentState["sensation"]["vital"]["energy"] = getEnergy();
-	currentState["sensation"]["vital"]["oxygen"] = getOxygen();
+	currentState[IDX_SENSATION][IDX_VITAL][IDX_HEALTH] = getHealth();
+	currentState[IDX_SENSATION][IDX_VITAL][IDX_FOOD] = getFood();
+	currentState[IDX_SENSATION][IDX_VITAL][IDX_WATER] = getWater();
+	currentState[IDX_SENSATION][IDX_VITAL][IDX_ENERGY] = getEnergy();
+	currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] = getOxygen();
 	// Hand variables
-	currentState["sensation"]["hand"]["item"] = getItemInHand();
-	currentState["sensation"]["hand"]["roughness"] = getHandRoughness();
-	currentState["sensation"]["hand"]["hardness"] = getHandHardness();
+	currentState[IDX_SENSATION][IDX_HAND][IDX_ITEM] = getItemInHand();
+	currentState[IDX_SENSATION][IDX_HAND][IDX_ROUGHNESS] = getHandRoughness();
+	currentState[IDX_SENSATION][IDX_HAND][IDX_HARDNESS] = getHandHardness();
 	// Olfaction
-	currentState["sensation"]["olfaction"]["intensity"] = getOlfactionIntensity();
-	currentState["sensation"]["olfaction"]["friendlyness"] = getOlfactionFriendlyness();
-	currentState["sensation"]["olfaction"]["edibleness"] = getOlfactionEdibleness();
-	currentState["sensation"]["olfaction"]["toxicity"] = getOlfactionToxicity();
+	currentState[IDX_SENSATION][IDX_OLFACTION][IDX_INTENSIVITY] = getOlfactionIntensity();
+	currentState[IDX_SENSATION][IDX_OLFACTION][IDX_FRIENDLYNESS] = getOlfactionFriendlyness();
+	currentState[IDX_SENSATION][IDX_OLFACTION][IDX_EDIBLENESS] = getOlfactionEdibleness();
+	currentState[IDX_SENSATION][IDX_OLFACTION][IDX_TOXICITY] = getOlfactionToxicity();
 	// Visual-field
 	{
-		currentState["sensation"]["visual-field"]["range"] = getViewRange();
-		currentState["sensation"]["visual-field"]["angle"] = getViewAngle();
+		currentState[IDX_SENSATION][IDX_VISUAL_FIELD][IDX_RANGE] = getViewRange();
+		currentState[IDX_SENSATION][IDX_VISUAL_FIELD][IDX_ANGLE] = getViewAngle();
 		//botplug::PixelicView view(*this);
-		//currentState["sensation"]["visual-field"]["width"] = view.getWidth();
-		//currentState["sensation"]["visual-field"]["height"] = view.getHeight();
-		currentState["sensation"]["visual-field"]["tactile-range"] = getTactileRange();
+		//currentState[IDX_SENSATION][IDX_VISUAL_FIELD]["width"] = view.getWidth();
+		//currentState[IDX_SENSATION][IDX_VISUAL_FIELD]["height"] = view.getHeight();
+		currentState[IDX_SENSATION][IDX_VISUAL_FIELD][IDX_TACTILE_RANGE] = getTactileRange();
 	}
 	// Blocks perception
-	inputCurrentState(currentState["sensation"]["vision"]["blocks"], getVisualField());
-	inputCurrentState(currentState["sensation"]["nearby"]["blocks"], getNearbyField());
-	inputCurrentState(currentState["sensation"]["touch"]["blocks"], getTouchField());
-	inputCurrentState(currentState["sensation"]["vision"]["entities"], getEntities("vision"));
-	inputCurrentState(currentState["sensation"]["nearby"]["entities"], getEntities("nearby"));
-	inputCurrentState(currentState["sensation"]["touch"]["entities"], getEntities("touch"));
-	inputCurrentState(currentState["sensation"]["carry"], carryList());
-	inputCurrentState(currentState["sensation"]["inventory"], inventoryList());
-	inputCurrentState(currentState["sensation"]["locker"], lockerList());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], getVisualField());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], getNearbyField());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], getTouchField());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], getEntities("vision"));
+	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], getEntities("nearby"));
+	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], getEntities("touch"));
+	inputCurrentState(currentState[IDX_SENSATION][IDX_CARRY], carryList());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_INVENTORY], inventoryList());
+	inputCurrentState(currentState[IDX_SENSATION][IDX_LOCKER], lockerList());
 }
 void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::Block>& blocks)
 {
@@ -212,43 +213,43 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::E
 }
 void Bot::outputCurrentState(State& currentState)
 {
-	if(!currentState["action"]["body"]["rotation"].isEmpty()) {
-		Bot::setBodyRotation((double) currentState["action"]["body"]["rotation"]);
+	if(!currentState[IDX_ACTION][IDX_BODY][IDX_ROTATION].isEmpty()) {
+		Bot::setBodyRotation((double) currentState[IDX_ACTION][IDX_BODY][IDX_ROTATION]);
 	}
-	if(!(currentState["action"]["body"]["translation"]["speed"].isEmpty() || currentState["action"]["body"]["translation"]["orientation"].isEmpty())) {
-		Bot::setBodyTranslation((double) currentState["action"]["body"]["translation"]["speed"], (double) currentState["action"]["body"]["translation"]["orientation"]);
+	if(!(currentState[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED].isEmpty() || currentState[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION].isEmpty())) {
+		Bot::setBodyTranslation((double) currentState[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED], (double) currentState[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION]);
 	}
-	if(!currentState["action"]["gesture"]["rest"].isEmpty()) {
-		Bot::setIngest((bool) currentState["action"]["gesture"]["rest"]);
+	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_REST].isEmpty()) {
+		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_REST]);
 	}
-	if(!(currentState["action"]["head"]["vertical"].isEmpty() || currentState["action"]["head"]["horizontal"].isEmpty())) {
-		Bot::setHeadMove((double) currentState["action"]["head"]["vertical"], (double) currentState["action"]["head"]["horizontal"]);
+	if(!(currentState[IDX_ACTION][IDX_HEAD][IDX_VERTICAL].isEmpty() || currentState[IDX_ACTION][IDX_HEAD][IDX_HORIZONTAL].isEmpty())) {
+		Bot::setHeadMove((double) currentState[IDX_ACTION][IDX_HEAD][IDX_VERTICAL], (double) currentState[IDX_ACTION][IDX_HEAD][IDX_HORIZONTAL]);
 	}
-	if(!currentState["action"]["attack"]["strongness"].isEmpty()) {
-		Bot::setAttack((double) currentState["action"]["attack"]["strongness"]);
+	if(!currentState[IDX_ACTION][IDX_ATTACK][IDX_STRONGNESS].isEmpty()) {
+		Bot::setAttack((double) currentState[IDX_ACTION][IDX_ATTACK][IDX_STRONGNESS]);
 	}
-	if(!currentState["action"]["jump"]["height"].isEmpty()) {
-		Bot::setAttack((double) currentState["action"]["jump"]["height"]);
+	if(!currentState[IDX_ACTION][IDX_JUMP][IDX_HEIGHT].isEmpty()) {
+		Bot::setAttack((double) currentState[IDX_ACTION][IDX_JUMP][IDX_HEIGHT]);
 	}
-	if(!currentState["action"]["gesture"]["touch"].isEmpty()) {
-		Bot::setIngest((bool) currentState["action"]["gesture"]["touch"]);
+	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH].isEmpty()) {
+		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH]);
 	}
-	if(!currentState["action"]["gesture"]["ingest"].isEmpty()) {
-		Bot::setIngest((bool) currentState["action"]["gesture"]["ingest"]);
+	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_INGEST].isEmpty()) {
+		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_INGEST]);
 	}
-	if(!currentState["action"]["gesture"]["throw"].isEmpty()) {
-		Bot::setIngest((bool) currentState["action"]["gesture"]["throw"]);
+	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_THROW].isEmpty()) {
+		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_THROW]);
 	}
-	if(!currentState["action"]["gesture"]["climb"].isEmpty()) {
-		Bot::setIngest((bool) currentState["action"]["gesture"]["climb"]);
+	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_CLIMB].isEmpty()) {
+		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_CLIMB]);
 	}
-	if(!(currentState["action"]["hand"]["get"]["slot"].isEmpty() && currentState["action"]["hand"]["put"]["slot"].isEmpty())) {
-		if(currentState["action"]["hand"]["put"].isEmpty()) {
-			Bot::switchItem((int) currentState["action"]["hand"]["get"]["slot"]);
+	if(!(currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT].isEmpty() && currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT].isEmpty())) {
+		if(currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT].isEmpty()) {
+			Bot::switchItem((int) currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT]);
 		} else {
-			Bot::moveItem(currentState["action"]["hand"]["get"]["slot"].isEmpty() ? 0 : (int) currentState["action"]["hand"]["get"]["slot"],
-					(int) currentState["action"]["hand"]["put"]["slot"],
-					currentState["action"]["hand"]["count"].isEmpty() ? 1 : (int) currentState["action"]["hand"]["count"]);
+			Bot::moveItem(currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT].isEmpty() ? 0 : (int) currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT],
+					(int) currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT],
+					currentState[IDX_ACTION][IDX_HAND]["count"].isEmpty() ? 1 : (int) currentState[IDX_ACTION][IDX_HAND]["count"]);
 		}
 	}
 }
