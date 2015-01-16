@@ -17,3 +17,8 @@ BotAPI::~BotAPI() {
 }
 int  BotAPI::brainDo() {}
 }
+
+int main()
+{
+	return 0;
+}

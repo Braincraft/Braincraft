@@ -2,8 +2,8 @@ CC=g++
 OPTION=-std=c++11
 FILE=Bot.o Amygdala.o Hippocampus.o Hypothalamus.o Thalamus.o mock/BotAPI.o
 
-brain: $(FILE)
-	$(CC) $(OPTION) $(FILE) -o $@ 
+mockbrain: $(FILE)
+	$(CC) $(OPTION) $(FILE) -o mock/$@ 
 
 %.o : %.cpp
 	$(CC) $(OPTION) -I mock/ -c $< -o $@ 
