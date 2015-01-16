@@ -8,7 +8,6 @@ using botplug::BotAPI;
 //class Action_braincraft;
 namespace braincraft
 {
-	class Action;
 	class Thalamus;
 }
 class Bot : public BotAPI
@@ -52,7 +51,7 @@ class Bot : public BotAPI
 		Bot(const std::string addr, const unsigned int port, const std::string login);
 		virtual ~Bot();
 		double frand_a_b(double a, double b);
-		void doAction(braincraft::Action const& action);
+		void doAction(State & action);
 		void dump();
 		int nTour = 0;
 };

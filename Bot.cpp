@@ -29,6 +29,13 @@ int Bot::brainDo()
 
 	State currentState = new State();
 	inputCurrentState(currentState);
+	std::cout << (int) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
+	std::cout << (double) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
+	     double speed = frand_a_b(1, 2), orientation = frand_a_b(0, 360), rotation = frand_a_b(-90, 90);
+	     Bot::setBodyRotation(rotation);
+	     Bot::setBodyTranslation(speed, orientation);
+//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES]
+//currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS]
 	thalamus->newState(currentState);
 	//outputCurrentState(currentState); //Find a way to do action
 	Bot::nTour++;
@@ -228,8 +235,8 @@ void Bot::outputCurrentState(State& currentState)
 	if(!currentState[IDX_ACTION][IDX_ATTACK][IDX_STRONGNESS].isEmpty()) {
 		Bot::setAttack((double) currentState[IDX_ACTION][IDX_ATTACK][IDX_STRONGNESS]);
 	}
-	if(!currentState[IDX_ACTION][IDX_JUMP][IDX_HEIGHT].isEmpty()) {
-		Bot::setAttack((double) currentState[IDX_ACTION][IDX_JUMP][IDX_HEIGHT]);
+	if(!currentState[IDX_ACTION][IDX_JUMP].isEmpty()) {
+		Bot::setJump((bool) currentState[IDX_ACTION][IDX_JUMP]);
 	}
 	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH].isEmpty()) {
 		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH]);
@@ -252,4 +259,8 @@ void Bot::outputCurrentState(State& currentState)
 					currentState[IDX_ACTION][IDX_HAND]["count"].isEmpty() ? 1 : (int) currentState[IDX_ACTION][IDX_HAND]["count"]);
 		}
 	}
+}
+void Bot::doAction(State& action)
+{
+	outputCurrentState(action);
 }
