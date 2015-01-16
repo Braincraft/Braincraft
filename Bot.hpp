@@ -1,22 +1,21 @@
-#ifndef BOT_HPP
-#define BOT_HPP
+#pragma once
 #define STEPS 1000
 
 #include "BotAPI.hpp"
 #include "State.hpp"
-#include "Thalamus.hpp"
 
 using botplug::BotAPI;
 //class Action_braincraft;
 namespace braincraft
 {
 	class Action;
+	class Thalamus;
 }
 class Bot : public BotAPI
 {
 	private:
 		int n;
-		Thalamus thalamus;
+		braincraft::Thalamus* thalamus;
 		/**
 		 * @brief FR : Fonction d'initialisation du bot. / EN : bot's initialization function
 		 */
@@ -47,15 +46,14 @@ class Bot : public BotAPI
 		int brainDo();
 
 	public:
-		Bot() : BotAPI(){initBot();}
-		Bot(const std::string file) : BotAPI(file){initBot();}
+		Bot();
+		Bot(const std::string file);
 		// Botlogin
-		Bot(const std::string addr, const unsigned int port, const std::string login) : BotAPI(addr,port,login){initBot();}
-		virtual ~Bot(){}
+		Bot(const std::string addr, const unsigned int port, const std::string login);
+		virtual ~Bot();
 		double frand_a_b(double a, double b);
 		void doAction(braincraft::Action const& action);
 		void dump();
 		int nTour = 0;
 };
 
-#endif

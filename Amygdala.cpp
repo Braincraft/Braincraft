@@ -1,7 +1,7 @@
 #include "Amygdala.hpp"
 #include "State.hpp"
 
-bool Amygdala::isImportant(State& state)
+State* Amygdala::isImportant(State& state)
 {
-	return false;
+	return nullptr;
 }

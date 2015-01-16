@@ -1,15 +1,11 @@
-#ifndef HIPPOCAMPUS_HPP
-#define HIPPOCAMPUS_HPP
-
+#pragma once
 class State;
-class Action;
 
 class Hippocampus
 {
+	void randomizeAction(State& action);
 	public:
-	void addState(State& state);
-	void addState(Action& action, State& state);
-	void orderState(void);
-
+		void addState(State& state);
+		void addState(State& action, State& state);
+		void orderState(void);
 };
-#endif
