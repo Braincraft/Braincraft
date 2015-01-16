@@ -1,4 +1,5 @@
 #include "Bot.hpp"
+#include <iostream>
 #include <vector>
 #include "config.hpp"
 #include "Thalamus.hpp"
