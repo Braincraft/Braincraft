@@ -1,4 +1,5 @@
 #include "Action_braincraft.hpp"
+
 namespace braincraft
 {
 Action::Action(bool random)
@@ -73,4 +74,23 @@ void Action::setEat(bool const eat)
 {
 	this->eat = eat;
 }
+
+  //Ajout Olivier-Alexandre
+
+  int seekFoodBag(int * bag, int bagSize){ //return position of first food in bag. -1 if no food in bag
+    int i;
+    int j;
+    int foodRef[] = {319,320,260,357,354};  //id ref of known food 
+    int foodTypesNumber;
+
+    for (i = 0; i < bagSize; i++){ // bag contains the id of items
+      for (j = 0; j < foodTypesNumber; j++){
+	if (bag[i] == foodRef[j])
+	  return i;
+      }
+    }
+
+    return -1;
+  }
+
 }
