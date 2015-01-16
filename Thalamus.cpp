@@ -9,9 +9,6 @@ Thalamus::Thalamus(Bot& bot): bot(bot)
 {
 	
 }
-//Thalamus::Thalamus()
-//{
-//}
 void Thalamus::print(void)
 {
 	std::cout << "Inside Thalamus" << std::endl;
@@ -22,12 +19,14 @@ void Thalamus::newState(State& state)
 	if((action = amygdala.isImportant(state)) != nullptr)
 	{
 		//amygdala.something
+		//bot.
 		hippocampus.addState(*action, state);
-		//bot.outputCurrentState(state);
+		bot.doAction(*action);
 	}
 	else
 	{
-		hippocampus.addState(state);
+		action = hippocampus.addState(state);
+		bot.doAction(*action);
 	}
 }
 }
