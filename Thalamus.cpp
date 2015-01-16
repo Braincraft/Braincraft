@@ -16,7 +16,7 @@ void Thalamus::print(void)
 void Thalamus::newState(State& state)
 {
 	State* action = nullptr;
-	if((action = amygdala.isImportant(state)) != nullptr)
+	if((action = amygdala.isCritical(state)) != nullptr)
 	{
 		//amygdala.something
 		//bot.
