@@ -31,9 +31,10 @@ int Bot::brainDo()
 	inputCurrentState(currentState);
 	std::cout << (int) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
 	std::cout << (double) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
-	     double speed = frand_a_b(1, 2), orientation = frand_a_b(0, 360), rotation = frand_a_b(-90, 90);
-	     Bot::setBodyRotation(rotation);
-	     Bot::setBodyTranslation(speed, orientation);
+       	std::cout << (String) currentState[IDX_SENSATION][IDX_CARRY] << std::endl;
+	double speed = frand_a_b(1, 2), orientation = frand_a_b(0, 360), rotation = frand_a_b(-90, 90);
+	Bot::setBodyRotation(rotation);
+	Bot::setBodyTranslation(speed, orientation);
 //currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES]
 //currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS]
 	thalamus->newState(currentState);

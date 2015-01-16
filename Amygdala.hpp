@@ -6,5 +6,5 @@ class Amygdala
 {
 	Hypothalamus hypothalamus;
 	public:
-		State* isImportant(State& state);
+		State* isCritical(State& state);
 };

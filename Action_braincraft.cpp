@@ -77,20 +77,20 @@ void Action::setEat(bool const eat)
 
   //Ajout Olivier-Alexandre
 
-  int seekFoodBag(int * bag, int bagSize){ //return position of first food in bag. -1 if no food in bag
-    int i;
-    int j;
-    int foodRef[] = {319,320,260,357,354};  //id ref of known food 
-    int foodTypesNumber;
+//   int seekFoodBag(int * bag, int bagSize){ //return position of first food in bag. -1 if no food in bag
+//     int i;
+//     int j;
+//     int foodRef[] = {319,320,260,357,354};  //id ref of known food 
+//     int foodTypesNumber;
 
-    for (i = 0; i < bagSize; i++){ // bag contains the id of items
-      for (j = 0; j < foodTypesNumber; j++){
-	if (bag[i] == foodRef[j])
-	  return i;
-      }
-    }
+//     for (i = 0; i < bagSize; i++){ // bag contains the id of items
+//       for (j = 0; j < foodTypesNumber; j++){
+// 	if (bag[i] == foodRef[j])
+// 	  return i;
+//       }
+//     }
 
-    return -1;
-  }
+//     return -1;
+//   }
 
 }
