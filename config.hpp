@@ -61,3 +61,4 @@
 #define IDX_GET_SLOT "get slot"
 #define IDX_PUT_SLOT "put slot"
 
+#define PI 3.14159265

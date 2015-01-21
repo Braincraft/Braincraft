@@ -30,16 +30,7 @@ int Bot::brainDo()
 
 	State currentState = new State();
 	inputCurrentState(currentState);
-	std::cout << (int) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
-	std::cout << (double) currentState[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN]<< std::endl;
-       	std::cout << (String) currentState[IDX_SENSATION][IDX_CARRY] << std::endl;
-	double speed = frand_a_b(1, 2), orientation = frand_a_b(0, 360), rotation = frand_a_b(-90, 90);
-	Bot::setBodyRotation(rotation);
-	Bot::setBodyTranslation(speed, orientation);
-//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES]
-//currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS]
 	thalamus->newState(currentState);
-	//outputCurrentState(currentState); //Find a way to do action
 	Bot::nTour++;
 
 	return 1;
@@ -66,7 +57,7 @@ void Bot::dump()
 		double yaw = getDirection()._yaw;
 		double pitch = getDirection()._pitch;
 		printf("Position (%f %f %f) orientation (%f %f) deg\n",
-				xpos, ypos, zpos, 180 / M_PI * yaw, 180 / M_PI * pitch);
+				xpos, ypos, zpos, yaw, pitch);
 	}
 	// Lymbic state
 	{
@@ -197,7 +188,7 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::B
 {
 	for(unsigned int i = 0; i < blocks.size(); i++) {
 		State block;
-		block.reset("{'id':'%d','position':{'x':'%f','y':'%f','z':'%f'},'distance':'%f','roughness':'%f','hardness':'%f','temperature':'%f','color':'#%x'}",
+		block.reset("{'id':'%d','x':'%f','y':'%f','z':'%f','distance':'%f','roughness':'%f','hardness':'%f','temperature':'%f','color':'#%x'}",
 				blocks[i]._id, blocks[i]._p._x, blocks[i]._p._y, blocks[i]._p._z, blocks[i]._distance, blocks[i]._roughness, blocks[i]._hardness, blocks[i]._temperature, blocks[i]._color);
 		currentSubState.add(block);
 	}
@@ -215,7 +206,7 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::E
 {
 	for(unsigned int i = 0; i < entities.size(); i++) {
 		State entity;
-		entity.reset("{'id':'%d','position':{'x':'%f','y':'%f','z':'%f'}}",
+		entity.reset("{'id':'%d','x':'%f','y':'%f','z':'%f'}",
 				entities[i]._id, entities[i]._p._x, entities[i]._p._y, entities[i]._p._z);
 		currentSubState.add(entity);
 	}
