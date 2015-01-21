@@ -3,6 +3,14 @@
 #include "config.hpp"
 #include "State.hpp"
 
+Amygdala::Amygdala()
+{
+	dangerousBlock.insert(11); //ID of lava
+	dangerousBlock.insert(10); //ID of spreading lava
+	dangerousBlock.insert(51); //ID of fire
+	dangerousBlock.insert(52); //ID of  mob spawner
+	dangerousBlock.insert(81); //ID of cactus
+}
 State* Amygdala::isCritical(State& state)
 {
 	std::cout << "Amygdala::isCritical" << std::endl;
@@ -34,11 +42,11 @@ State* Amygdala::isCritical(State& state)
 bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double &z)
 {
 	int i = 0;
-	//TODO probably switch to a set or a list
-	static int const lava_id = 11; //ID of lava
+	int id;
 	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i].isEmpty())
 	{
-		if((int) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i]["id"] == lava_id)
+		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i]["id"];
+		if(dangerousBlock.count(id) > 0)
 		{
 			x = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i][IDX_POSITION_X];
 			y = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i][IDX_POSITION_Y];
@@ -49,7 +57,8 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 	}
 	while(! state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i].isEmpty())
 	{
-		if((int) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i]["id"] == lava_id)
+		id = (int) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i]["id"];
+		if(dangerousBlock.count(id) > 0)
 		{
 			x = (double) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i][IDX_POSITION_X];
 			y = (double) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i][IDX_POSITION_Y];
@@ -62,7 +71,7 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 }
 
 State& Amygdala::runAway(State& state, double x_foe, double y_foe, double z_foe)
-{
+{//TODO where will it goes if it's over lava
 	State& reflex = *(new State());
 	double x_me, z_me, yaw, x_object, z_object;
 	double const distanceObject = 10;
