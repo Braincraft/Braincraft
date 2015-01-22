@@ -87,7 +87,7 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 	while(! state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i].isEmpty())
 	{
 		id = (int) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i]["id"];
-		if(dangerousBlock.count(id) > 0)
+		if(dangerousEntity.count(id) > 0)
 		{
 			x = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_X];
 			y = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_Y];
@@ -99,7 +99,7 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i].isEmpty())
 	{
 		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i]["id"];
-		if(dangerousBlock.count(id) > 0)
+		if(dangerousEntity.count(id) > 0)
 		{
 			x = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_X];
 			y = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_Y];
@@ -111,7 +111,7 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 	while(! state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i].isEmpty())
 	{
 		id = (int) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i]["id"];
-		if(dangerousBlock.count(id) > 0)
+		if(dangerousEntity.count(id) > 0)
 		{
 			x = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_X];
 			y = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_Y];
