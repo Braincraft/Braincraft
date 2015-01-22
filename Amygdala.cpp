@@ -3,7 +3,7 @@
 #include "config.hpp"
 #include "State.hpp"
 
-Amygdala::Amygdala() : dangerousBlock(), isFood()
+Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 {
 	dangerousBlock.insert(11); //ID of lava
 	dangerousBlock.insert(10); //ID of spreading lava
@@ -11,6 +11,13 @@ Amygdala::Amygdala() : dangerousBlock(), isFood()
 	dangerousBlock.insert(52); //ID of  mob spawner
 	dangerousBlock.insert(81); //ID of cactus
 
+	dangerousEntity.insert(50); // ID of Creeper
+	dangerousEntity.insert(51); // ID of Skeleton
+	dangerousEntity.insert(52); // ID of Spider
+	dangerousEntity.insert(53); // ID of Giant
+	dangerousEntity.insert(54); // ID of Zombie
+	dangerousEntity.insert(55); // ID of Slime
+	
 	isFood.insert(260); //Apple ID
 	isFood.insert(357); //Cookie ID
 	isFood.insert(364); //Steak ID
@@ -73,9 +80,58 @@ State* Amygdala::isCritical(State& state)
       return nullptr;
     }
 bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double &z)
+// for blocks and entities
 {
 	int i = 0;
 	int id;
+	while(! state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i].isEmpty())
+	{
+		id = (int) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i]["id"];
+		if(dangerousBlock.count(id) > 0)
+		{
+			x = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_X];
+			y = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_Y];
+			z = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_Z];
+			return true;
+		}
+		++i;
+	}
+	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i].isEmpty())
+	{
+		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i]["id"];
+		if(dangerousBlock.count(id) > 0)
+		{
+			x = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_X];
+			y = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_Y];
+			z = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_Z];
+			return true;
+		}
+		++i;
+	}
+	while(! state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i].isEmpty())
+	{
+		id = (int) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i]["id"];
+		if(dangerousBlock.count(id) > 0)
+		{
+			x = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_X];
+			y = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_Y];
+			z = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_Z];
+			return true;
+		}
+		++i;
+	}
+	while(! state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i].isEmpty())
+	{
+		id = (int) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i]["id"];
+		if(dangerousBlock.count(id) > 0)
+		{
+			x = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_X];
+			y = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_Y];
+			z = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_Z];
+			return true;
+		}
+		++i;
+	}
 	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i].isEmpty())
 	{
 		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i]["id"];
@@ -100,6 +156,8 @@ bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double
 		}
 		++i;
 	}
+
+
 	return false;
 }
 
