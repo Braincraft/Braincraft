@@ -3,42 +3,75 @@
 #include "config.hpp"
 #include "State.hpp"
 
-Amygdala::Amygdala()
+Amygdala::Amygdala() : dangerousBlock(), isFood()
 {
 	dangerousBlock.insert(11); //ID of lava
 	dangerousBlock.insert(10); //ID of spreading lava
 	dangerousBlock.insert(51); //ID of fire
 	dangerousBlock.insert(52); //ID of  mob spawner
 	dangerousBlock.insert(81); //ID of cactus
+
+	isFood.insert(260); //Apple ID
+	isFood.insert(357); //Cookie ID
+	isFood.insert(364); //Steak ID
+	isFood.insert(365); //Raw Chicken ID
+	isFood.insert(366); //Chicken ID
+	std::cout << "loutre " << isFood.count(364) << " " << dangerousBlock.count(11) << std::endl;
 }
 State* Amygdala::isCritical(State& state)
 {
-	std::cout << "Amygdala::isCritical" << std::endl;
-	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0)
-	{
-		std::cout << " oxygen" << std::endl;
-		State& reflexAction = *(new State());
-		reflexAction[IDX_ACTION][IDX_JUMP] = true;
-		return &reflexAction;
+  int i;
+
+  std::cout << "Amygdala::isCritical" << std::endl;
+  //std::cout << (int) state[IDX_SENSATION][IDX_HAND][IDX_ITEM] << std::endl;
+  //std::cout << (String) state[IDX_SENSATION][IDX_CARRY] << std::endl;
+
+  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0) // Bot jumps if underwater
+    {
+      std::cout << "oxygen" << std::endl;
+      State& reflexAction = *(new State());
+      reflexAction[IDX_ACTION][IDX_JUMP] = true;
+      return &reflexAction;
+    }
+  double x_target, y_target, z_target;
+  if(isThereDangerousBlocks(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
+    {
+      std::cout << "dangerous block" << std::endl;
+      State& reflexAction = runAway(state, x_target, y_target, z_target);
+      return &reflexAction;
+    }
+	
+  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] <= 1) //Bot looks for food in carry if hungry, places it in hand and eats
+    {
+      i = 0;
+      int id;
+      int index;
+
+      std::cout << "hungry" << std::endl;
+      State& reflexAction = *(new State());
+
+      while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
+	
+	id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
+
+	std::cout << isFood.count(id) <<" " << id << std::endl;
+	if(isFood.count(id)){                         // checks if item is food
+	  index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
+	  //state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
+	  state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
+     
+	  std::cout << "Coucou je rentre bien dans le if" << std::endl;
+	  reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
+	  return &reflexAction;
 	}
-	double x_target, y_target, z_target;
-	if(isThereDangerousBlocks(state, x_target, y_target, z_target))
-	{
-		std::cout << "foe" << std::endl;
-		State& reflexAction = runAway(state, x_target, y_target, z_target);
-		return &reflexAction;
-	}
-	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < 0.5)
-	{
-		std::cout << "hungry" << std::endl;
-		State& reflexAction = *(new State());
-		//Mettre nourriture dans sa main (si jamais il n'y en a pas déjà dedans)
-		reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true;
-		return &reflexAction;
-	}
-	//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
-	return nullptr;
-}
+	i++;
+      }	
+		  	
+      //  return &reflexAction;
+    }
+      //currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
+      return nullptr;
+    }
 bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double &z)
 {
 	int i = 0;
