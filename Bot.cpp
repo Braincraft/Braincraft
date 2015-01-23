@@ -20,8 +20,9 @@ Bot::Bot(const std::string addr, const unsigned int port, const std::string logi
 }
 int Bot::brainDo()
 {
-	// The bot-sampling-time must be incremented at each step
-	fprintf(stderr, "Platypus It is good to be alive, Time = %d.\n", botSamplingTime++);
+	//double temperature = getBodyTemperature();
+	fprintf(stderr, "health=%f food=%f water=%f energy=%f oxygen=%f time=%d\n",
+			getHealth(), getFood(), getWater(), getEnergy(), getOxygen(), botSamplingTime);
 
 	// Clear the XML flow before sendong commands
 	Bot::clearAll();
@@ -126,6 +127,7 @@ void Bot::dump(const std::vector<botplug::item>& items, const std::vector<bool>&
 // Manage the internal bot-sampling-time
 void Bot::initBot()
 {
+	std::cerr << "Init Bot" << std::endl;
 	thalamus = new braincraft::Thalamus(*this);
 	botMaxSamplingTime = 0;
 }
