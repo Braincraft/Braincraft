@@ -17,7 +17,61 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 	dangerousEntity.insert(53); // ID of Giant
 	dangerousEntity.insert(54); // ID of Zombie
 	dangerousEntity.insert(55); // ID of Slime
-	
+	dangerousEntity.insert(0); // ID of Creeper
+	dangerousEntity.insert(1); // ID of Skeleton
+	dangerousEntity.insert(2); // ID of Spider
+	dangerousEntity.insert(3); // ID of Giant
+	dangerousEntity.insert(4); // ID of Zombie
+	dangerousEntity.insert(5); // ID of Slime	
+	dangerousEntity.insert(6); // ID of Creeper
+	dangerousEntity.insert(7); // ID of Skeleton
+	dangerousEntity.insert(8); // ID of Spider
+	dangerousEntity.insert(9); // ID of Giant
+	dangerousEntity.insert(10); // ID of Zombie
+	dangerousEntity.insert(11); // ID of Slime
+	dangerousEntity.insert(12); // ID of Creeper
+	dangerousEntity.insert(13); // ID of Skeleton
+	dangerousEntity.insert(14); // ID of Spider
+	dangerousEntity.insert(15); // ID of Giant
+	dangerousEntity.insert(16); // ID of Zombie
+	dangerousEntity.insert(17); // ID of Slime
+	dangerousEntity.insert(18); // ID of Creeper
+	dangerousEntity.insert(19); // ID of Skeleton
+	dangerousEntity.insert(20); // ID of Spider
+	dangerousEntity.insert(21); // ID of Giant
+	dangerousEntity.insert(22); // ID of Zombie
+	dangerousEntity.insert(23); // ID of Slime
+	dangerousEntity.insert(24); // ID of Creeper
+	dangerousEntity.insert(25); // ID of Skeleton
+	dangerousEntity.insert(26); // ID of Spider
+	dangerousEntity.insert(27); // ID of Giant
+	dangerousEntity.insert(28); // ID of Zombie
+	dangerousEntity.insert(29); // ID of Slime
+	dangerousEntity.insert(30); // ID of Creeper
+	dangerousEntity.insert(31); // ID of Skeleton
+	dangerousEntity.insert(32); // ID of Spider
+	dangerousEntity.insert(33); // ID of Giant
+	dangerousEntity.insert(34); // ID of Zombie
+	dangerousEntity.insert(35); // ID of Slime
+	dangerousEntity.insert(36); // ID of Creeper
+	dangerousEntity.insert(37); // ID of Skeleton
+	dangerousEntity.insert(38); // ID of Spider
+	dangerousEntity.insert(39); // ID of Giant
+	dangerousEntity.insert(40); // ID of Zombie
+	dangerousEntity.insert(41); // ID of Slime
+	dangerousEntity.insert(42); // ID of Creeper
+	dangerousEntity.insert(43); // ID of Skeleton
+	dangerousEntity.insert(44); // ID of Spider
+	dangerousEntity.insert(45); // ID of Giant
+	dangerousEntity.insert(46); // ID of Zombie
+	dangerousEntity.insert(47); // ID of Slime
+	dangerousEntity.insert(48); // ID of Creeper
+	dangerousEntity.insert(49); // ID of Skeleton
+	dangerousEntity.insert(56); // ID of Spider
+	dangerousEntity.insert(57); // ID of Giant
+	dangerousEntity.insert(58); // ID of Zombie
+	dangerousEntity.insert(59); // ID of Slime*/
+
 	isFood.insert(260); //Apple ID
 	isFood.insert(357); //Cookie ID
 	isFood.insert(364); //Steak ID
