@@ -5,6 +5,7 @@
 
 Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 {
+	std::cerr << "Create Amygdala" << std::endl;
 	dangerousBlock.insert(11); //ID of lava
 	dangerousBlock.insert(10); //ID of spreading lava
 	dangerousBlock.insert(51); //ID of fire
@@ -77,15 +78,12 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 	isFood.insert(364); //Steak ID
 	isFood.insert(365); //Raw Chicken ID
 	isFood.insert(366); //Chicken ID
-	std::cout << "loutre " << isFood.count(364) << " " << dangerousBlock.count(11) << std::endl;
 }
 State* Amygdala::isCritical(State& state)
 {
   int i;
 
   std::cout << "Amygdala::isCritical" << std::endl;
-  //std::cout << (int) state[IDX_SENSATION][IDX_HAND][IDX_ITEM] << std::endl;
-  //std::cout << (String) state[IDX_SENSATION][IDX_CARRY] << std::endl;
 
   if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0) // Bot jumps if underwater
     {
@@ -95,9 +93,9 @@ State* Amygdala::isCritical(State& state)
       return &reflexAction;
     }
   double x_target, y_target, z_target;
-  if(isThereDangerousBlocks(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
+  if(isThereDangerousStuff(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
     {
-      std::cout << "dangerous block" << std::endl;
+      std::cout << "dangerous stuff" << std::endl;
       State& reflexAction = runAway(state, x_target, y_target, z_target);
       return &reflexAction;
     }
@@ -133,86 +131,38 @@ State* Amygdala::isCritical(State& state)
       //currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
       return nullptr;
     }
-bool Amygdala::isThereDangerousBlocks(State& state, double &x, double &y, double &z)
-// for blocks and entities
+bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double &z, std::set<int> const& list) const
 {
 	int i = 0;
 	int id;
-	while(! state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i].isEmpty())
+	while(! state[i].isEmpty())
 	{
-		id = (int) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i]["id"];
-		if(dangerousEntity.count(id) > 0)
+		id = (int) state[i]["id"];
+		if(list.count(id) > 0)
 		{
-			x = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES][i][IDX_POSITION_Z];
+			x = (double) state[i][IDX_POSITION_X];
+			y = (double) state[i][IDX_POSITION_Y];
+			z = (double) state[i][IDX_POSITION_Z];
 			return true;
 		}
 		++i;
 	}
-	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i].isEmpty())
-	{
-		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i]["id"];
-		if(dangerousEntity.count(id) > 0)
-		{
-			x = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES][i][IDX_POSITION_Z];
-			return true;
-		}
-		++i;
-	}
-	while(! state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i].isEmpty())
-	{
-		id = (int) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i]["id"];
-		if(dangerousEntity.count(id) > 0)
-		{
-			x = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES][i][IDX_POSITION_Z];
-			return true;
-		}
-		++i;
-	}
-	while(! state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i].isEmpty())
-	{
-		id = (int) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i]["id"];
-		if(dangerousBlock.count(id) > 0)
-		{
-			x = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS][i][IDX_POSITION_Z];
-			return true;
-		}
-		++i;
-	}
-	while(! state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i].isEmpty())
-	{
-		id = (int) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i]["id"];
-		if(dangerousBlock.count(id) > 0)
-		{
-			x = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS][i][IDX_POSITION_Z];
-			return true;
-		}
-		++i;
-	}
-	while(! state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i].isEmpty())
-	{
-		id = (int) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i]["id"];
-		if(dangerousBlock.count(id) > 0)
-		{
-			x = (double) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i][IDX_POSITION_X];
-			y = (double) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i][IDX_POSITION_Y];
-			z = (double) state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS][i][IDX_POSITION_Z];
-			return true;
-		}
-		++i;
-	}
-
-
 	return false;
+}
+bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double &z)
+{
+	return
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, dangerousEntity)
+	||
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, dangerousEntity)
+	||
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, dangerousEntity)
+	||
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], x, y, z, dangerousBlock)
+	||
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], x, y, z, dangerousBlock)
+	||
+	isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], x, y, z, dangerousBlock);
 }
 
 State& Amygdala::runAway(State& state, double x_foe, double y_foe, double z_foe)
@@ -254,11 +204,13 @@ State& Amygdala::runAway(State& state, double x_foe, double y_foe, double z_foe)
 	turn *= -1;
 	//Then run
 	if(fabs(turn) > 10)
+	{
 		reflex[IDX_ACTION][IDX_BODY][IDX_ROTATION] = turn;
+		//Because your back facing the foe, no orientation needed. Just left 0 to go forward.
+		reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = turn; //Move in the direction we are turning to
+	}
 	//Run like hell
 	reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 15;
-	//Because your back facing the foe, no orientation needed. Just left 0 to go forward.
-	reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = turn; //Move in the direction we are turning to
 	printf("runAway foe(%f, %f) me(%f, %f) obj(%f, %f) theta(%f) yaw(%f) turn(%f)\n", x_foe, z_foe, x_me, z_me, x_object, z_object, theta, yaw, turn);
 	return reflex;
 }

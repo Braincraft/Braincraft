@@ -1,13 +1,14 @@
 CC=g++
-OPTION=-std=c++11
-FILE=Bot.o Amygdala.o Hippocampus.o Hypothalamus.o Thalamus.o mock/BotAPI.o
+OPTION=-g -std=c++11
+FILE=obj/Bot.o obj/Amygdala.o obj/Hippocampus.o obj/Hypothalamus.o obj/Thalamus.o mock/BotAPI.o
 
-mockbrain: $(FILE)
+mockbrain: obj $(FILE) 
 	$(CC) $(OPTION) $(FILE) -o mock/$@ 
 
-%.o : %.cpp
+obj/%.o : %.cpp
 	$(CC) $(OPTION) -I mock/ -c $< -o $@ 
-
+obj:
+	mkdir obj
 clean:
 	rm -f $(FILE)
 ve:

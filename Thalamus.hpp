@@ -9,7 +9,7 @@ namespace braincraft
 class Thalamus
 {
 	Hippocampus hippocampus;
-	Amygdala amygdala;
+	Amygdala* amygdala;
 	Bot& bot;
 	public:
 		Thalamus(Bot& bot);

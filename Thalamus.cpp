@@ -5,8 +5,10 @@
 
 namespace braincraft
 {
-Thalamus::Thalamus(Bot& bot): bot(bot)
+Thalamus::Thalamus(Bot& bot): bot(bot), hippocampus()
 {
+	std::cout << "Create Thalamus" << std::endl;
+	amygdala = new Amygdala();
 	
 }
 void Thalamus::print(void)
@@ -16,7 +18,7 @@ void Thalamus::print(void)
 void Thalamus::newState(State& state)
 {
 	State* action = nullptr;
-	if((action = amygdala.isCritical(state)) != nullptr)
+	if((action = amygdala->isCritical(state)) != nullptr)
 	{
 		//amygdala.something
 		//bot.
