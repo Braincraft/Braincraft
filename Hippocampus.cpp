@@ -15,6 +15,19 @@ Hippocampus::Hippocampus(bool haveToSaveMemory)
 	if(haveToSave)
 		std::cout << "Saving memory in : " << savingLocation << std::endl;
 }
+Hippocampus::~Hippocampus()
+{
+	alzheimer();
+}
+void Hippocampus::alzheimer(void)
+{
+	for(auto pair : allMemory)
+	{
+		delete pair.first;
+		delete pair.second;
+	}
+	allMemory.clear();
+}
 void Hippocampus::addState(State& action, State& state)
 {
 	saveState(action, state);
@@ -31,6 +44,7 @@ State* Hippocampus::addState(State& state)
 }
 void Hippocampus::saveState(State& action, State& state)
 {
+	allMemory.push_front(std::make_pair(&action, &state));
 	if(!haveToSave)
 		return;
 	std::stringstream streamAction, streamState;
