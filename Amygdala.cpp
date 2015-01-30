@@ -46,7 +46,7 @@ State* Amygdala::isCritical(State& state)
       return &reflexAction;
     }
 	
-  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] <= 1) //Bot looks for food in carry if hungry, places it in hand and eats
+  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < 1) //Bot looks for food in carry if hungry, places it in hand and eats
     {
       i = 0;
       int id;
