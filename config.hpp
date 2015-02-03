@@ -60,5 +60,6 @@
 #define IDX_CLIMB "climb"
 #define IDX_GET_SLOT "get slot"
 #define IDX_PUT_SLOT "put slot"
+#define IDX_PRIMARY_ACTION "primary action" //It could be useful to say that an action was create by amygdala and which function in amygdala
 
 #define PI 3.14159265
