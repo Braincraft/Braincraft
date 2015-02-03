@@ -36,11 +36,12 @@ void Hippocampus::addState(State& action, State& state)
 State* Hippocampus::addState(State& state)
 {
 	//intern boui boui to create random action	
-	State* randAction = new State();
-	randomizeAction(*randAction);
-	saveState(*randAction, state);
+	State* action = new State();
+	if( ! isThereWorryingStuff(*action, state))
+		randomizeAction(*action);
+	saveState(*action, state);
 	++timeCount;
-	return randAction;
+	return action;
 }
 void Hippocampus::saveState(State& action, State& state)
 {
@@ -56,13 +57,89 @@ void Hippocampus::saveState(State& action, State& state)
 void Hippocampus::orderState(void)
 {
 }
+bool Hippocampus::isThereWorryingStuff(State& action, State& state)
+{
+	//Found some coloration
+	//Pour le moment une couleur est une variation négative d'une jauge
+	int color = colorate(state);
+	if(color == no_color)
+		return false;
+	std::pair<State*, State*> loutre;
+	if(findNearColoredState(color, loutre, state))
+	{
+		fprintf(stderr, "Use a previous state (%d)\n", (int)(*loutre.second)[IDX_NOW][IDX_TIME_STEP]);
+		action = *loutre.first;
+		return true;
+	}
+	
+	return false;
+}
+double Hippocampus::distance(State& s1, State& s2)
+{
+	return 1.0;
+}
+bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state)
+{
+	//Parcour la memory pour trouver un instant coloré de color et où l'instant suivant, la couleur n'est plus
+	if(allMemory.size() == 1)
+		return false;
+	auto firstTime = allMemory.begin();
+	auto secondTime = allMemory.begin();
+	auto thirdTime = allMemory.begin();
+	++secondTime;
+	++thirdTime;
+	++thirdTime;
+	std::pair<State*, State*> best;
+	double bestDistance;
+	bool foundBest = false;
+	while(secondTime != allMemory.end())
+	{
+		State* firstState = firstTime->second;
+		State* secondState = secondTime->second;
+		State* thirdState = thirdTime->second;
+		char firstColor = colorate(*secondState, *firstState);
+		char secondColor = colorate(*thirdState, *secondState);
+		if(secondColor == color && secondColor != firstColor)
+		{
+			double dist = distance(*firstState, state);
+			//I used < instead of <= because the more recent it is, the best.
+			if(foundBest == false || dist < bestDistance)
+			{
+				best = * firstTime;
+				bestDistance = dist;
+				foundBest = true;
+			}
+		}	
+		++secondTime;
+		++firstTime;
+		++thirdTime;
+	}
+	if(foundBest)
+		sameColoredState = best;
+	return foundBest;
+}
+char Hippocampus::colorate(State& state)
+{
+	State& previous = *(allMemory.front().second);
+	return colorate(previous, state);
+}
+char Hippocampus::colorate(State& previous, State& state)
+{
+	if((double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < (double) previous[IDX_SENSATION][IDX_VITAL][IDX_FOOD])
+		return hungry_color;
+	if((double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < (double) previous[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN])
+		return oxygen_color;
+	if((double) state[IDX_SENSATION][IDX_VITAL][IDX_ENERGY] < (double) previous[IDX_SENSATION][IDX_VITAL][IDX_ENERGY])
+		return hungry_color;
+	return no_color;
+}
 void Hippocampus::randomizeAction(State& action)
 {
 	double const high = 10;
 	double speed = 10;
 	double orientation = 5, rotation;
 	int randChoice = rand() %100;
-	//std::cout << "randomizeAction " << randChoice << std::endl;
+	std::cout << "randomizeAction " << randChoice << std::endl;
 	//std::cin >> rotation;
 	//std::cin >> orientation;
 	//std::cin >> speed;
