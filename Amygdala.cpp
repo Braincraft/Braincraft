@@ -27,56 +27,56 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 }
 State* Amygdala::isCritical(State& state)
 {
-  int i;
+	int i;
 
-  std::cout << "Amygdala::isCritical" << std::endl;
+	std::cout << "Amygdala::isCritical" << std::endl;
 
-  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0) // Bot jumps if underwater
-    {
-      std::cout << "oxygen" << std::endl;
-      State& reflexAction = *(new State());
-      reflexAction[IDX_ACTION][IDX_JUMP] = true;
-      return &reflexAction;
-    }
-  double x_target, y_target, z_target;
-  if(isThereDangerousStuff(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
-    {
-      std::cout << "dangerous stuff" << std::endl;
-      State& reflexAction = runAway(state, x_target, y_target, z_target);
-      return &reflexAction;
-    }
-	
-  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < 1) //Bot looks for food in carry if hungry, places it in hand and eats
-    {
-      i = 0;
-      int id;
-      int index;
-
-      std::cout << "hungry" << std::endl;
-      State& reflexAction = *(new State());
-
-      while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
-	
-	id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
-
-	std::cout << isFood.count(id) <<" " << id << std::endl;
-	if(isFood.count(id)){                         // checks if item is food
-	  index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
-	  //state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
-	  state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
-     
-	  std::cout << "Coucou je rentre bien dans le if" << std::endl;
-	  reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
-	  return &reflexAction;
+	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0) // Bot jumps if underwater
+	{
+		std::cout << "oxygen" << std::endl;
+		State& reflexAction = *(new State());
+		reflexAction[IDX_ACTION][IDX_JUMP] = true;
+		return &reflexAction;
 	}
-	i++;
-      }	
-		  	
-      //  return &reflexAction;
-    }
-      //currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
-      return nullptr;
-    }
+	double x_target, y_target, z_target;
+	if(isThereDangerousStuff(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
+	{
+		std::cout << "dangerous stuff" << std::endl;
+		State& reflexAction = runAway(state, x_target, y_target, z_target);
+		return &reflexAction;
+	}
+
+	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < 1) //Bot looks for food in carry if hungry, places it in hand and eats
+	{
+		i = 0;
+		int id;
+		int index;
+
+		std::cout << "hungry" << std::endl;
+		State& reflexAction = *(new State());
+
+		while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
+
+			id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
+
+			std::cout << isFood.count(id) <<" " << id << std::endl;
+			if(isFood.count(id)){                         // checks if item is food
+				index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
+				//state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
+				state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
+
+				std::cout << "Coucou je rentre bien dans le if" << std::endl;
+				reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
+				return &reflexAction;
+			}
+			i++;
+		}	
+
+		//  return &reflexAction;
+	}
+	//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
+	return nullptr;
+}
 bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double &z, std::set<int> const& list) const
 {
 	int i = 0;
@@ -157,6 +157,7 @@ State& Amygdala::runAway(State& state, double x_foe, double y_foe, double z_foe)
 	}
 	//Run like hell
 	reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 15;
+	reflex[IDX_ACTION][IDX_PRIMARY_ACTION] = "run away";
 	printf("runAway foe(%f, %f) me(%f, %f) obj(%f, %f) theta(%f) yaw(%f) turn(%f)\n", x_foe, z_foe, x_me, z_me, x_object, z_object, theta, yaw, turn);
 	return reflex;
 }
