@@ -19,16 +19,9 @@ void Thalamus::newState(State& state)
 {
 	State* action = nullptr;
 	if((action = amygdala->isCritical(state)) != nullptr)
-	{
-		//amygdala.something
-		//bot.
 		hippocampus.addState(*action, state);
-		bot.doAction(*action);
-	}
 	else
-	{
 		action = hippocampus.addState(state);
-		bot.doAction(*action);
-	}
+	bot.doAction(*action);
 }
 }
