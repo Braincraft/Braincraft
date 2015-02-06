@@ -9,6 +9,9 @@ class Amygdala
   std::set<int> isFood;
   std::set<int> dangerousEntity;
 
+  //const double hungry = 0.8;
+  // const double drowning = 1;
+
   
   Hypothalamus hypothalamus;
   bool isThereDangerousStuff(State& state, double &x, double &y, double &z);

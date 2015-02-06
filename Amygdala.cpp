@@ -3,6 +3,9 @@
 #include "config.hpp"
 #include "State.hpp"
 
+#define HUNGRY 0.8
+#define DROWNING 1
+
 Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 {
 	std::cerr << "Create Amygdala" << std::endl;
@@ -18,6 +21,7 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 	dangerousEntity.insert(53); // ID of Giant
 	dangerousEntity.insert(54); // ID of Zombie
 	dangerousEntity.insert(55); // ID of Slime
+
 	dangerousEntity.insert(0); // ID of Creeper
 	dangerousEntity.insert(1); // ID of Skeleton
 	dangerousEntity.insert(2); // ID of Spider
@@ -78,59 +82,65 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 	isFood.insert(364); //Steak ID
 	isFood.insert(365); //Raw Chicken ID
 	isFood.insert(366); //Chicken ID
+	
+	std::cout << "loutre " << isFood.count(364) << " " << dangerousBlock.count(11) << std::endl;
+
+	
+
 }
 State* Amygdala::isCritical(State& state)
 {
-	int i;
+  int i;
 
-	std::cout << "Amygdala::isCritical" << std::endl;
+  std::cout << "Amygdala::isCritical" << std::endl;
 
-	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < 1.0) // Bot jumps if underwater
-	{
-		std::cout << "oxygen" << std::endl;
-		State& reflexAction = *(new State());
-		reflexAction[IDX_ACTION][IDX_JUMP] = true;
-		return &reflexAction;
+  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < DROWNING) // Bot jumps if underwater
+    {
+      std::cout << "oxygen" << std::endl;
+      State& reflexAction = *(new State());
+      reflexAction[IDX_ACTION][IDX_JUMP] = true;
+      return &reflexAction;
+    }
+  double x_target, y_target, z_target;
+  if(isThereDangerousStuff(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
+    {
+      std::cout << "dangerous stuff" << std::endl;
+      State& reflexAction = runAway(state, x_target, y_target, z_target);
+      return &reflexAction;
+    }
+	
+  if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < HUNGRY) //Bot looks for food in carry if hungry, places it in hand and eats
+    {
+      i = 0;
+      int id;
+      int index;
+
+      std::cout << "hungry" << std::endl;
+      State& reflexAction = *(new State());
+
+      while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
+
+	id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
+
+	std::cout << isFood.count(id) <<" " << id << std::endl;
+	if(isFood.count(id)){                         // checks if item is food
+	  index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
+	  //state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
+	  state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
+
+	  std::cout << "Coucou je rentre bien dans le if" << std::endl;
+	  reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
+	  return &reflexAction;
 	}
-	double x_target, y_target, z_target;
-	if(isThereDangerousStuff(state, x_target, y_target, z_target))  //Bot runs away from dangerous blocks
-	{
-		std::cout << "dangerous stuff" << std::endl;
-		State& reflexAction = runAway(state, x_target, y_target, z_target);
-		return &reflexAction;
-	}
+	i++;
+      }	
 
-	if( (double) state[IDX_SENSATION][IDX_VITAL][IDX_FOOD] < 1) //Bot looks for food in carry if hungry, places it in hand and eats
-	{
-		i = 0;
-		int id;
-		int index;
-
-		std::cout << "hungry" << std::endl;
-		State& reflexAction = *(new State());
-
-		while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
-
-			id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
-
-			std::cout << isFood.count(id) <<" " << id << std::endl;
-			if(isFood.count(id)){                         // checks if item is food
-				index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
-				//state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
-				state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
-
-				std::cout << "Coucou je rentre bien dans le if" << std::endl;
-				reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
-				return &reflexAction;
-			}
-			i++;
-		}	
-
-		//  return &reflexAction;
-	}
-	//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
-	return nullptr;
+      //  return &reflexAction;
+    }
+  //currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
+  return nullptr;
 }
+
 bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double &z, std::set<int> const& list) const
 {
 	int i = 0;
@@ -149,6 +159,7 @@ bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double 
 	}
 	return false;
 }
+
 bool Amygdala::isThereDangerousStuff(State& state, double &x, double &y, double &z)
 {
 	return

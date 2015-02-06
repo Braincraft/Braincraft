@@ -31,6 +31,9 @@ int Bot::brainDo()
 
 	State currentState = new State();
 	inputCurrentState(currentState);
+	
+	//switchItem(1);
+	
 	thalamus->newState(currentState);
 	Bot::nTour++;
 
@@ -245,10 +248,14 @@ void Bot::outputCurrentState(State& currentState)
 	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_CLIMB].isEmpty()) {
 		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_CLIMB]);
 	}
+	std::cout << (String) currentState[IDX_ACTION][IDX_HAND]  << std::endl;
 	if(!(currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT].isEmpty() && currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT].isEmpty())) {
+	  std::cout << "Coucou je suis avant le if" << std::endl;
 		if(currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT].isEmpty()) {
+		  std::cout << "Coucou je rentre bien dans le if de BOT" << std::endl;
 			Bot::switchItem((int) currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT]);
 		} else {
+		  std::cout << "Coucou je rentre bien dans le else" << std::endl;
 			Bot::moveItem(currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT].isEmpty() ? 0 : (int) currentState[IDX_ACTION][IDX_HAND][IDX_GET_SLOT],
 					(int) currentState[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT],
 					currentState[IDX_ACTION][IDX_HAND]["count"].isEmpty() ? 1 : (int) currentState[IDX_ACTION][IDX_HAND]["count"]);
