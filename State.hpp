@@ -87,6 +87,24 @@ class State
 		sprintf(chars, "%.16g", value);
 		this->value = chars;
 	}
+	bool isDouble(void) const
+	{
+		char* endptr = 0;
+		strtod(value.c_str(), &endptr);
+
+		if(*endptr != '\0' || endptr == value.c_str())
+			return false;
+		return true;
+	}
+	bool isBool(void) const
+	{
+		if(value.size() != 4 && value.size() != 5)
+			return false;
+		std::string tmp = value;
+		for(int i = 0; i < tmp.size(); ++i)
+			tmp[i] = tolower(tmp[i]);
+		return tmp == "true" || tmp == "false";
+	}
   private:
 	// Converts a string a number
 	static double toDouble(String name)
