@@ -83,10 +83,6 @@ Amygdala::Amygdala() : dangerousBlock(), isFood(), dangerousEntity()
 	isFood.insert(365); //Raw Chicken ID
 	isFood.insert(366); //Chicken ID
 	
-	std::cout << "loutre " << isFood.count(364) << " " << dangerousBlock.count(11) << std::endl;
-
-	
-
 }
 State* Amygdala::isCritical(State& state)
 {
@@ -121,14 +117,9 @@ State* Amygdala::isCritical(State& state)
       while (!state[IDX_SENSATION][IDX_CARRY][i].isEmpty()){ //looks through what the bot carries
 
 	id = (int) state[IDX_SENSATION][IDX_CARRY][i]["id"];
-
-	std::cout << isFood.count(id) <<" " << id << std::endl;
 	if(isFood.count(id)){                         // checks if item is food
 	  index = (int) state[IDX_SENSATION][IDX_CARRY][i]["index"];
-	  //state[IDX_ACTION][IDX_HAND][IDX_PUT_SLOT] = true;
-	  state[IDX_ACTION][IDX_HAND][IDX_GET_SLOT] = index;        //puts current item in hand
-
-	  std::cout << "Coucou je rentre bien dans le if" << std::endl;
+	  reflexAction[IDX_ACTION][IDX_HAND][IDX_SWITCH] = index;        //puts current item in hand
 	  reflexAction[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true; 
 	  return &reflexAction;
 	}
