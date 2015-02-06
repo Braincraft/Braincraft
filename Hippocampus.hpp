@@ -24,12 +24,13 @@ class Hippocampus
 	std::vector<bool> colorate(State& state);
 	std::vector<bool> colorate(State& previous, State& state);
 	bool findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state);
-	double distance(State& s1, State& s2);
+	
 	std::list<int> getDangerousGauge(State& state);
 	public:
 		Hippocampus(bool haveToSaveMemory = false);
 		State* addState(State& state);
 		void addState(State& action, State& state);
 		void alzheimer(void);
+                double distance(State& s1, State& s2);
 		~Hippocampus();
 };

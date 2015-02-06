@@ -1,5 +1,7 @@
 #include "Hippocampus.hpp"
 #include <sstream>
+#include <cmath>
+#include <ctgmath>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -88,7 +90,25 @@ std::list<int> Hippocampus::getDangerousGauge(State& state)
 }
 double Hippocampus::distance(State& s1, State& s2)
 {
-	return 1.0;
+  State::Iterator it1(s1);
+  State::Iterator it2(s2);
+  double val=0;
+  bool b1=it1.next(),b2=it2.next();
+  while(b1 && b2){
+    //std::cout << "calculating distance"<< std::endl;
+    if (it1.getValue().isAtomic() && it2.getValue().isAtomic())//might be a problem if only one is atomic
+      {
+    	val += (double)it1.getValue() - (double)it2.getValue(); 
+      } 
+    else
+      {
+    	val += distance(it1.getValue(),it2.getValue());
+      }
+    b1 = it1.next();
+    b2 = it2.next();
+  }
+  //std::cout << "distance of " << val << " calculated"<<std::endl;
+  return val;
 }
 bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state)
 {
