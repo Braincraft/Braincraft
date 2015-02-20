@@ -2,6 +2,7 @@
 #include <sstream>
 #include <cmath>
 #include <ctgmath>
+#include <vector>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <stdio.h>
@@ -98,8 +99,40 @@ double Hippocampus::distance(State& s1, State& s2)
     //std::cout << "calculating distance"<< std::endl;
     if (it1.getValue().isAtomic() && it2.getValue().isAtomic())//might be a problem if only one is atomic
       {
-    	val += (double)it1.getValue() - (double)it2.getValue(); 
-      } 
+	if( it1.getValue().isBool() )
+	  {
+	    //std::cout << "calculating bool"<< std::endl;
+	    if(it1.getValue() != it2.getValue())
+	      val += 1.0;
+	  }
+	else if ( it1.getValue().isDouble() )
+	  {
+	    val += fabs((double)it1.getValue() - (double)it2.getValue());
+	    //std::cout << "calculating double "<< std::endl;
+	  }
+	else
+	  {
+	    //std::cout << "calculating string"<< std::endl;
+	    String S1 = it1.getValue();
+	    String S2 = it2.getValue();
+	    //unsigned int levenshtein_distance(const T &S1, const T & S2) {
+	    const size_t len1 = S1.size(), len2 = S2.size();
+	    std::vector<unsigned int> col(len2+1), prevCol(len2+1);
+	    
+	    for (unsigned int i = 0; i < prevCol.size(); i++)
+	      prevCol[i] = i;
+	    for (unsigned int i = 0; i < len1; i++) {
+	      col[0] = i+1;
+	      for (unsigned int j = 0; j < len2; j++)
+		col[j+1] = std::min( std::min(prevCol[1 + j] + 1, col[j] + 1),
+				     prevCol[j] + (S1[i]==S2[j] ? 0 : 1) );
+	      col.swap(prevCol);
+	    }
+	    val += (double)prevCol[len2];
+	    //return prevCol[len2];
+	  }
+	   
+      }
     else
       {
     	val += distance(it1.getValue(),it2.getValue());
@@ -107,7 +140,7 @@ double Hippocampus::distance(State& s1, State& s2)
     b1 = it1.next();
     b2 = it2.next();
   }
-  //std::cout << "distance of " << val << " calculated"<<std::endl;
+  std::cout << "distance of " << val << " calculated"<<std::endl;
   return val;
 }
 bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state)

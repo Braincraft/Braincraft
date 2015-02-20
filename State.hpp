@@ -91,7 +91,7 @@ class State
 	{
 		char* endptr = 0;
 		strtod(value.c_str(), &endptr);
-
+		
 		if(*endptr != '\0' || endptr == value.c_str())
 			return false;
 		return true;

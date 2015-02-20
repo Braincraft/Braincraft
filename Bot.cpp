@@ -23,11 +23,12 @@ int Bot::brainDo()
 	//double temperature = getBodyTemperature();
 	fprintf(stderr, "health=%f food=%f water=%f energy=%f oxygen=%f time=%d\n",
 			getHealth(), getFood(), getWater(), getEnergy(), getOxygen(), botSamplingTime);
-
+	
 	// Clear the XML flow before sendong commands
 	Bot::clearAll();
 	// dump work but comment because is too verbose to let it by default
 	//dump();
+	
 
 	State currentState = new State();
 	inputCurrentState(currentState);
@@ -35,6 +36,13 @@ int Bot::brainDo()
 	//switchItem(1);
 	
 	thalamus->newState(currentState);
+
+//	Hippocampus* hippo = new Hippocampus();
+//	State stateBis = currentState;
+//	stateBis[IDX_SENSATION][IDX_VITAL][IDX_FOOD] = 0.3;
+// 	stateBis[IDX_WORLD] = "worldy";	
+//	hippo->distance(currentState,stateBis);
+	
 	Bot::nTour++;
 
 	return 1;
