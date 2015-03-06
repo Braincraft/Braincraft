@@ -83,6 +83,7 @@ Amygdala::Amygdala():dangerousBlock(), isFood(), dangerousEntity()
 	isFood.insert(365);			//Raw Chicken ID
 	isFood.insert(366);			//Chicken ID
 
+	interrestingEntity.insert(92);
 }
 
 State *Amygdala::isCritical(State & state)
@@ -90,7 +91,22 @@ State *Amygdala::isCritical(State & state)
 	int i;
 
 	std::cout << "Amygdala::isCritical" << std::endl;
+	double x_target, y_target, z_target;
 
+	//if(isThereInterrestingStuff(state, x_target, y_target, z_target))
+	//{
+		//double my_x, my_z;
+		//my_x = (double) state[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_X];
+		//my_z = (double) state[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_Z];
+		//printf("There is interrestingEntity (%f,%f)\n", x_target, z_target);
+		//State & reflexAction = aim(state, x_target, y_target, z_target);
+		//double dist = sqrt(pow(my_x - x_target, 2) + pow(my_x - x_target, 2));
+		//if(dist > 3) //Distance from where I can't reach the cow anymore
+			//reflexAction[IDX_ACTION][IDX_ATTACK][IDX_STRONGNESS] = 1.0;
+		//else
+			//reflexAction[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 15;
+		//return &reflexAction;
+	//}
 	if((double)state[IDX_SENSATION][IDX_VITAL][IDX_OXYGEN] < DROWNING)	// Bot jumps if underwater
 	{
 		std::cout << "oxygen" << std::endl;
@@ -98,7 +114,6 @@ State *Amygdala::isCritical(State & state)
 		reflexAction[IDX_ACTION][IDX_JUMP] = true;
 		return &reflexAction;
 	}
-	double x_target, y_target, z_target;
 	if(isThereDangerousStuff(state, x_target, y_target, z_target))	//Bot runs away from dangerous blocks
 	{
 		std::cout << "dangerous stuff" << std::endl;
@@ -113,7 +128,6 @@ State *Amygdala::isCritical(State & state)
 		if(tryToEat(state, reflex))
 			return reflex;
 	}
-	//currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES];
 	return nullptr;
 }
 
@@ -159,6 +173,10 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 	return false;
 }
 
+bool Amygdala::isThereInterrestingStuff(State & state, double &x, double &y, double &z)
+{
+	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, interrestingEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, interrestingEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, interrestingEntity);
+}
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z)
 {
 	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], x, y, z, dangerousBlock) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], x, y, z, dangerousBlock) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], x, y, z, dangerousBlock);
@@ -212,5 +230,54 @@ State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_fo
 	reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 15;
 	reflex[IDX_ACTION][IDX_PRIMARY_ACTION] = "run away";
 	printf("runAway foe(%f, %f) me(%f, %f) obj(%f, %f) theta(%f) yaw(%f) turn(%f)\n", x_foe, z_foe, x_me, z_me, x_object, z_object, theta, yaw, turn);
+	return reflex;
+}
+State & Amygdala::aim(State & state, double x_foe, double y_foe, double z_foe)
+{								//TODO where will it goes if it's over lava
+	State & reflex = *(new State());
+	double x_me, z_me, yaw, x_object, z_object;
+	double const distanceObject = 10;
+	x_me = (double)state[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_X];
+	z_me = (double)state[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_Z];
+	yaw = (double)state[IDX_SENSATION][IDX_LOCATION][IDX_ORIENTATION][IDX_YAW];
+	yaw *= -1;					//As explain below, degree are flipped
+	//sin and cos are flipped because z and x are flipped too (z is abscissa)
+	x_object = distanceObject * sin(yaw * PI / 180) + x_me;	//Convert yaw in radian
+	z_object = distanceObject * cos(yaw * PI / 180) + z_me;	//Convert yaw in radian
+	double x_v1, z_v1, x_v2, z_v2, n_v1, n_v2, c, s, theta, turn;
+	//vector coordinate of me and a position ahead, and me and the foe
+	x_v1 = z_object - z_me;		//z is abscissa , because in minecraft y is the heigh 
+	z_v1 = x_object - x_me;
+	x_v2 = z_foe - z_me;
+	z_v2 = x_foe - x_me;
+	//In v1 and v2 x is abscissa
+	//Angle between vetors v1 and v2
+	n_v1 = sqrt(x_v1 * x_v1 + z_v1 * z_v1);
+	n_v2 = sqrt(x_v2 * x_v2 + z_v2 * z_v2);
+	c = (x_v1 * x_v2 + z_v1 * z_v2) / (n_v1 * n_v2);
+	s = (x_v1 * z_v2 - x_v2 * z_v1);
+	if(s < 0)
+		s = -1;
+	else
+		s = 1;
+	theta = s * acos(c) * (180 / PI);	//180 / PI -> Convert back in degree
+	//How much do I have to turn so my back face my foe
+	turn = theta;
+	if(turn > 180)
+		turn = -180 + theta;
+	//If you look on an axis, to go left you use positive number of degree
+	//In ve, you need a negative one.
+	//In ve, to turn right, you have to set rotation at 90°
+	turn *= -1;
+	//Then run
+	if(fabs(turn) > 10)
+	{
+		reflex[IDX_ACTION][IDX_BODY][IDX_ROTATION] = turn;
+		//Because your back facing the foe, no orientation needed. Just left 0 to go forward.
+		reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = turn;	//Move in the direction we are turning to
+	}
+	//Run like hell
+	reflex[IDX_ACTION][IDX_PRIMARY_ACTION] = "aim";
+	printf("aim foe(%f, %f) me(%f, %f) obj(%f, %f) theta(%f) yaw(%f) turn(%f)\n", x_foe, z_foe, x_me, z_me, x_object, z_object, theta, yaw, turn);
 	return reflex;
 }
