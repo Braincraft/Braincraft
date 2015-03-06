@@ -23,15 +23,12 @@ int Bot::brainDo()
 	//double temperature = getBodyTemperature();
 	fprintf(stderr, "health=%f food=%f water=%f energy=%f oxygen=%f time=%d\n",
 			getHealth(), getFood(), getWater(), getEnergy(), getOxygen(), botSamplingTime);
-	
-	// Clear the XML flow before sendong commands
-	Bot::clearAll();
-	// dump work but comment because is too verbose to let it by default
-	//dump();
-	
 
+	Bot::clearAll();
 	State currentState = new State();
 	inputCurrentState(currentState);
+	std::cout << (String) currentState[IDX_SENSATION][IDX_VISION][IDX_ENTITIES] << std::endl;
+	std::cout << (String) currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES] << std::endl;
 	
 	//switchItem(1);
 	
@@ -44,9 +41,7 @@ int Bot::brainDo()
 //	hippo->distance(currentState,stateBis);
 	
 	Bot::nTour++;
-
 	return 1;
-
 }
 
 
@@ -243,6 +238,7 @@ void Bot::outputCurrentState(State& currentState)
 	}
 	if(!currentState[IDX_ACTION][IDX_JUMP].isEmpty()) {
 		Bot::setJump((bool) currentState[IDX_ACTION][IDX_JUMP]);
+		//Bot::setJump((bool) currentState[IDX_ACTION][IDX_JUMP]);
 	}
 	if(!currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH].isEmpty()) {
 		Bot::setIngest((bool) currentState[IDX_ACTION][IDX_GESTURE][IDX_TOUCH]);

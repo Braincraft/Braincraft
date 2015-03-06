@@ -13,7 +13,6 @@ namespace braincraft
 class Bot : public BotAPI
 {
 	private:
-		int n;
 		braincraft::Thalamus* thalamus;
 		/**
 		 * @brief FR : Fonction d'initialisation du bot. / EN : bot's initialization function

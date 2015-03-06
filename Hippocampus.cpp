@@ -193,7 +193,7 @@ void Hippocampus::randomizeAction(State& action)
 	double speed = 10;
 	double orientation = 5, rotation;
 	int randChoice = rand() %100;
-	std::cout << "randomizeAction " << randChoice << std::endl;
+	//std::cout << "randomizeAction " << randChoice << std::endl;
 	//std::cin >> rotation;
 	//std::cin >> orientation;
 	//std::cin >> speed;
@@ -201,22 +201,22 @@ void Hippocampus::randomizeAction(State& action)
 	//action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = orientation;
 	//action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = speed;
 
-	if(randChoice < 10) {//eat something
-		action[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true;
-	}
-	else if(randChoice <30) {//Walk forward
-		action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = speed;
-	}
-	else if(randChoice <50) {//Change orientation
-		double randOrientation = rand() %360;
-		action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = randOrientation;
-	}
-	else if(randChoice <60) {//Jump
-		action[IDX_ACTION][IDX_JUMP] = true;
-	}
-	else {//stop everything
-		action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 0;
-	}
+	//if(randChoice < 10) {//eat something
+		//action[IDX_ACTION][IDX_GESTURE][IDX_INGEST] = true;
+	//}
+	//else if(randChoice <30) {//Walk forward
+		//action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = speed;
+	//}
+	//else if(randChoice <50) {//Change orientation
+		//double randOrientation = rand() %360;
+		//action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = randOrientation;
+	//}
+	//else if(randChoice <60) {//Jump
+		//action[IDX_ACTION][IDX_JUMP] = true;
+	//}
+	//else {//stop everything
+		//action[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 0;
+	//}
 }
 bool Hippocampus::dirExists(std::string const& path)
 {
