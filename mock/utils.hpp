@@ -151,7 +151,7 @@ struct Entity {
    * See: The <a href="http://minecraft.gamepedia.com/Data_values#Entity_IDs">entity IDs</a>
    */
   int _id;
-
+  int _typeId;
   /**
    * @brief FR : Position de l'entité sur la map Minecraft
    * EN : The Minecraft entity's Position on the map
