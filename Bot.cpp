@@ -215,7 +215,7 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::E
 	for(unsigned int i = 0; i < entities.size(); i++) {
 		State entity;
 		entity.reset("{'id':'%d','x':'%f','y':'%f','z':'%f'}",
-				entities[i]._id, entities[i]._p._x, entities[i]._p._y, entities[i]._p._z);
+				entities[i]._typeId, entities[i]._p._x, entities[i]._p._y, entities[i]._p._z);
 		currentSubState.add(entity);
 	}
 }
