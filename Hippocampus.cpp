@@ -108,14 +108,33 @@ double Hippocampus::levenshteinStateDistance(State& s1, State& s2)
   return (double)prevCol[len2];
 }
 
-
-double Hippocampus::distance(State& s1, State& s2)
-{
+double Hippocampus::distance(State& s1, State& s2) {
   State::Iterator it1(s1);
   State::Iterator it2(s2);
   double val=0;
+  int count=0;
+  int indx=-1;
   bool b1=it1.next(),b2=it2.next();
-  while(b1 && b2){
+
+  while(b1 && b2) {
+    indx = it2.getIndex();
+    while( it1.getName() != it2.getName() ) {
+      count++;
+      if(!it2.next()) {
+	count = -1;
+	it2.setIndex(indx);
+	break;
+      }
+    }
+    if(count < 0) {
+      count = 0;
+      val += 5;
+      b1 = it1.next();
+      continue;
+    }
+    
+    val += count*5;
+
     if (it1.getValue().isAtomic() && it2.getValue().isAtomic())
       {
 	if( it1.getValue().isBool() )
@@ -133,6 +152,7 @@ double Hippocampus::distance(State& s1, State& s2)
 	    String S2 = it2.getValue();
 	    const size_t len1 = S1.size(), len2 = S2.size();
 	    std::vector<unsigned int> col(len2+1), prevCol(len2+1);
+
 	    for (unsigned int i = 0; i < prevCol.size(); i++)
 	      prevCol[i] = i;
 	    for (unsigned int i = 0; i < len1; i++) {
@@ -150,12 +170,65 @@ double Hippocampus::distance(State& s1, State& s2)
 	std::cout << it1.getName() << std::endl;
     	val += distance(it1.getValue(),it2.getValue());
       }
+    
     b1 = it1.next();
     b2 = it2.next();
+    
   }
   std::cout << "distance of " << val << " calculated"<<std::endl;
   return val;
+
 }
+
+
+// double Hippocampus::distance(State& s1, State& s2)
+// {
+//   State::Iterator it1(s1);
+//   State::Iterator it2(s2);
+//   double val=0;
+//   bool b1=it1.next(),b2=it2.next();
+//   while(b1 && b2){
+//     if (it1.getValue().isAtomic() && it2.getValue().isAtomic())
+//       {
+// 	if( it1.getValue().isBool() )
+// 	  {
+// 	    if(it1.getValue() != it2.getValue())
+// 	      val += 1.0;
+// 	  }
+// 	else if ( it1.getValue().isDouble() )
+// 	  {
+// 	    val += fabs((double)it1.getValue() - (double)it2.getValue());
+// 	  }
+// 	else
+// 	  {
+// 	    String S1 = it1.getValue();
+// 	    String S2 = it2.getValue();
+// 	    const size_t len1 = S1.size(), len2 = S2.size();
+// 	    std::vector<unsigned int> col(len2+1), prevCol(len2+1);
+
+// 	    for (unsigned int i = 0; i < prevCol.size(); i++)
+// 	      prevCol[i] = i;
+// 	    for (unsigned int i = 0; i < len1; i++) {
+// 	      col[0] = i+1;
+// 	      for (unsigned int j = 0; j < len2; j++)
+// 		col[j+1] = std::min( std::min(prevCol[1 + j] + 1, col[j] + 1),
+// 				     prevCol[j] + (S1[i]==S2[j] ? 0 : 1) );
+// 	      col.swap(prevCol);
+// 	    }
+// 	    val += (double)prevCol[len2];
+// 	  }
+//       }
+//     else
+//       {
+// 	std::cout << it1.getName() << std::endl;
+//     	val += distance(it1.getValue(),it2.getValue());
+//       }
+//     b1 = it1.next();
+//     b2 = it2.next();
+//   }
+//   std::cout << "distance of " << val << " calculated"<<std::endl;
+//   return val;
+// }
 bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state)
 {
 	//Parcour la memory pour trouver un instant coloré de color et où l'instant suivant, la couleur n'est plus

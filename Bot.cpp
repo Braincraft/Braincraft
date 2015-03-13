@@ -23,15 +23,12 @@ int Bot::brainDo()
 	//double temperature = getBodyTemperature();
 	fprintf(stderr, "health=%f food=%f water=%f energy=%f oxygen=%f time=%d\n",
 			getHealth(), getFood(), getWater(), getEnergy(), getOxygen(), botSamplingTime);
+	//<<<<<<< Updated upstream
 
 	Bot::clearAll();
 	State currentState = new State();
 	inputCurrentState(currentState);
-	std::cout << (String) currentState[IDX_SENSATION][IDX_VISION][IDX_ENTITIES] << std::endl;
-	std::cout << (String) currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES] << std::endl;
-	
 	//switchItem(1);
-	
 	thalamus->newState(currentState);
 
 	Hippocampus* hippo = new Hippocampus();
@@ -147,10 +144,13 @@ bool Bot::stopCondition() const
 }
 void Bot::inputCurrentState(State& currentState)
 {
-	currentState.reset("");
+        std::vector<botplug::Block> blocks;
+	std::vector<botplug::Entity> entities;
+	std::vector<botplug::item> items;
+        currentState.reset("");
 	currentState[IDX_NOW][IDX_TIME_STEP] = botSamplingTime;
 	currentState[IDX_NOW][IDX_REAL_TIME] = (unsigned int) time(NULL);
-	currentState[IDX_WORLD] = getWorld();
+	currentState[IDX_WORLD] = getWorld();	
 	// Position/Orientation
 	currentState[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_X] = getPosition()._x;
 	currentState[IDX_SENSATION][IDX_LOCATION][IDX_POSITION][IDX_POSITION_Y] = getPosition()._y;
@@ -182,18 +182,69 @@ void Bot::inputCurrentState(State& currentState)
 		currentState[IDX_SENSATION][IDX_VISUAL_FIELD][IDX_TACTILE_RANGE] = getTactileRange();
 	}
 	// Blocks perception
-	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], getVisualField());
-	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], getNearbyField());
-	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], getTouchField());
-	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], getEntities("vision"));
-	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], getEntities("nearby"));
-	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], getEntities("touch"));
-	inputCurrentState(currentState[IDX_SENSATION][IDX_CARRY], carryList());
-	inputCurrentState(currentState[IDX_SENSATION][IDX_INVENTORY], inventoryList());
-	inputCurrentState(currentState[IDX_SENSATION][IDX_LOCKER], lockerList());
+	blocks = getVisualField();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], blocks);
+	blocks = getNearbyField();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], blocks);
+	blocks = getTouchField();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], blocks);
+	entities = getEntities("vision");
+	inputCurrentState(currentState[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], entities);
+	entities = getEntities("nearby");
+	inputCurrentState(currentState[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], entities);
+	entities = getEntities("touch");
+	inputCurrentState(currentState[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], entities);
+	
+	items = carryList();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_CARRY], items);
+	items = inventoryList();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_INVENTORY], items);
+	items = lockerList();
+	inputCurrentState(currentState[IDX_SENSATION][IDX_LOCKER], items);
 }
-void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::Block>& blocks)
+
+bool Bot::sortBlocks(botplug::Block b1 , botplug::Block b2)
 {
+  if (b1._distance != b2._distance)
+    return (b1._distance < b2._distance);
+  else if (b1._id != b2._id)
+    return (b1._id < b2._id);
+  else if (b1._p._x != b2._p._x)
+    return (b1._p._x < b2._p._x);
+  else if (b1._p._y != b2._p._y)
+    return (b1._p._y < b2._p._y);
+  else if (b1._p._z != b2._p._z)
+    return (b1._p._z < b2._p._z);
+  return true;
+}
+
+bool Bot::sortItems(botplug::item i1 , botplug::item i2)
+{
+  if (i1._id != i2._id)
+    return (i1._id < i2._id);
+  else if (i1._slot != i2._slot)
+    return (i1._slot < i2._slot);
+  else if (i1._number != i2._number)
+    return (i1._number < i2._number);
+  return true;
+}
+
+bool Bot::sortEntities(botplug::Entity i1 , botplug::Entity i2)
+{
+  if (i1._typeId != i2._typeId)
+    return (i1._typeId < i2._typeId);
+  else if (i1._p._x != i2._p._x)
+    return (i1._p._x < i2._p._x);
+  else if (i1._p._y != i2._p._y)
+    return (i1._p._y < i2._p._y);
+  else if (i1._p._z != i2._p._z)
+    return (i1._p._z < i2._p._z);
+  return true;
+}
+
+void Bot::inputCurrentState(State& currentSubState, std::vector<botplug::Block>& blocks)
+{
+        std::sort(blocks.begin(),blocks.end(),sortBlocks);
 	for(unsigned int i = 0; i < blocks.size(); i++) {
 		State block;
 		block.reset("{'id':'%d','x':'%f','y':'%f','z':'%f','distance':'%f','roughness':'%f','hardness':'%f','temperature':'%f','color':'#%x'}",
@@ -201,8 +252,10 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::B
 		currentSubState.add(block);
 	}
 }
-void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::item>& items)
+
+void Bot::inputCurrentState(State& currentSubState, std::vector<botplug::item>& items)
 {
+        std::sort(items.begin(),items.end(),sortItems);
 	for(unsigned int i = 0; i < items.size(); i++) {
 		State item;
 		item.reset("{'id':'%d','index':'%d','number':'%d'",
@@ -210,15 +263,18 @@ void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::i
 		currentSubState.add(item);
 	}
 }
-void Bot::inputCurrentState(State& currentSubState, const std::vector<botplug::Entity>& entities)
+
+void Bot::inputCurrentState(State& currentSubState, std::vector<botplug::Entity>& entities)
 {
-	for(unsigned int i = 0; i < entities.size(); i++) {
+        std::sort(entities.begin(),entities.end(),sortEntities);
+        for(unsigned int i = 0; i < entities.size(); i++) {
 		State entity;
 		entity.reset("{'id':'%d','x':'%f','y':'%f','z':'%f'}",
 				entities[i]._typeId, entities[i]._p._x, entities[i]._p._y, entities[i]._p._z);
 		currentSubState.add(entity);
 	}
 }
+
 void Bot::outputCurrentState(State& currentState)
 {
 	if(!currentState[IDX_ACTION][IDX_BODY][IDX_ROTATION].isEmpty()) {

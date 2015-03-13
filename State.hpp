@@ -429,6 +429,11 @@ class State
 			index++;
 			return index < (int)names.size();
 		}
+	/** Set the index to the new index given.*/
+	        void setIndex(int ind)
+	        {
+	                index = ind;
+	        }
 	};
 
   /** Returns true if this structure equals the comparing one.

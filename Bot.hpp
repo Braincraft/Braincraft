@@ -27,9 +27,12 @@ class Bot : public BotAPI
 		// Defines the internal bot-sampling-time incremented at each step
 		unsigned int botSamplingTime = 0, botMaxSamplingTime = 1000;
 		void inputCurrentState(State& currentState);
-		void inputCurrentState(State& currentSubState, const std::vector<botplug::Block>& blocks);
-		void inputCurrentState(State& currentSubState, const std::vector<botplug::item>& items);
-		void inputCurrentState(State& currentSubState, const std::vector<botplug::Entity>& entities);
+                static bool sortBlocks(botplug::Block b1 , botplug::Block b2);
+                static bool sortItems(botplug::item i1 , botplug::item i2);
+                static bool sortEntities(botplug::Entity i1 , botplug::Entity i2);
+		void inputCurrentState(State& currentSubState, std::vector<botplug::Block>& blocks);
+		void inputCurrentState(State& currentSubState, std::vector<botplug::item>& items);
+		void inputCurrentState(State& currentSubState, std::vector<botplug::Entity>& entities);
 		void outputCurrentState(State& currentState);
 		static void dump(const std::vector<botplug::Block>& blocks);
 		static void dump(const botplug::Block& block);
