@@ -34,12 +34,12 @@ int Bot::brainDo()
 	
 	thalamus->newState(currentState);
 
-//	Hippocampus* hippo = new Hippocampus();
-//	State stateBis = currentState;
-//	stateBis[IDX_SENSATION][IDX_VITAL][IDX_FOOD] = 0.3;
-// 	stateBis[IDX_WORLD] = "worldy";	
-//	hippo->distance(currentState,stateBis);
-	
+	Hippocampus* hippo = new Hippocampus();
+	State stateBis = currentState;
+	stateBis[IDX_SENSATION][IDX_VITAL][IDX_FOOD] = 0.3;
+ 	stateBis[IDX_WORLD] = "worldy";
+	std::cout << "dist 1 " << hippo->distance(currentState,stateBis) << std::endl;
+	std::cout << "dist 2 " << hippo->levenshteinStateDistance(currentState,stateBis) << std::endl;
 	Bot::nTour++;
 	return 1;
 }

@@ -32,5 +32,6 @@ class Hippocampus
 		void addState(State& action, State& state);
 		void alzheimer(void);
                 double distance(State& s1, State& s2);
+  double levenshteinStateDistance(State& s1, State& s2);
 		~Hippocampus();
 };
