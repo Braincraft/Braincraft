@@ -16,7 +16,7 @@ Amygdala::Amygdala():dangerousBlock(), isFood(), dangerousEntity()
 	dangerousBlock.insert(81);	//ID of cactus
 	
 
-	for (int i = 50; i < 69 ; i ++) //hostile mobs
+	for (int i = 50; i < 69 ; i ++) //ID of hostile mobs
 	  dangerousEntity.insert(i);
 
 	isFood.insert(260);			//Apple ID
@@ -98,6 +98,7 @@ bool Amygdala::tryToEat(State & state, State* &reflex)
 
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z, std::set < int >const &list) const
 {
+	//check for members of the list in the state
 	int i = 0;
 	int id;
 	while(!state[i].isEmpty())
@@ -117,11 +118,20 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 
 bool Amygdala::isThereInterrestingStuff(State & state, double &x, double &y, double &z)
 {
-	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, interrestingEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, interrestingEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, interrestingEntity);
+	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, interrestingEntity) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, interrestingEntity) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, interrestingEntity);
 }
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z)
 {
-	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, dangerousEntity) || isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], x, y, z, dangerousBlock) || isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], x, y, z, dangerousBlock) || isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], x, y, z, dangerousBlock);
+	return  //check hostiles entityies
+			   isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, dangerousEntity) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, dangerousEntity) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, dangerousEntity) 
+			//check dangerous blocks
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_BLOCKS], x, y, z, dangerousBlock) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_BLOCKS], x, y, z, dangerousBlock) 
+			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], x, y, z, dangerousBlock);
 }
 
 State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_foe)
@@ -136,14 +146,17 @@ State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_fo
 	//sin and cos are flipped because z and x are flipped too (z is abscissa)
 	x_object = distanceObject * sin(yaw * PI / 180) + x_me;	//Convert yaw in radian
 	z_object = distanceObject * cos(yaw * PI / 180) + z_me;	//Convert yaw in radian
+	
 	double x_v1, z_v1, x_v2, z_v2, n_v1, n_v2, c, s, theta, turn;
 	//vector coordinate of me and a position ahead, and me and the foe
 	x_v1 = z_object - z_me;		//z is abscissa , because in minecraft y is the heigh 
 	z_v1 = x_object - x_me;
 	x_v2 = z_foe - z_me;
 	z_v2 = x_foe - x_me;
+	
 	//In v1 and v2 x is abscissa
 	//Angle between vetors v1 and v2
+	
 	n_v1 = sqrt(x_v1 * x_v1 + z_v1 * z_v1);
 	n_v2 = sqrt(x_v2 * x_v2 + z_v2 * z_v2);
 	c = (x_v1 * x_v2 + z_v1 * z_v2) / (n_v1 * n_v2);
@@ -154,20 +167,26 @@ State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_fo
 		s = 1;
 	theta = s * acos(c) * (180 / PI);	//180 / PI -> Convert back in degree
 	//How much do I have to turn so my back face my foe
+	
 	turn = 180 + theta;
 	if(turn > 180)
 		turn = -180 + theta;
+	
 	//If you look on an axis, to go left you use positive number of degree
 	//In ve, you need a negative one.
 	//In ve, to turn right, you have to set rotation at 90°
+	
 	turn *= -1;
+
 	//Then run
+	
 	if(fabs(turn) > 10)
 	{
 		reflex[IDX_ACTION][IDX_BODY][IDX_ROTATION] = turn;
 		//Because your back facing the foe, no orientation needed. Just left 0 to go forward.
 		reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_ORIENTATION] = turn;	//Move in the direction we are turning to
 	}
+	
 	//Run like hell
 	reflex[IDX_ACTION][IDX_BODY][IDX_TRANSLATION][IDX_SPEED] = 15;
 	reflex[IDX_ACTION][IDX_PRIMARY_ACTION] = "run away";
