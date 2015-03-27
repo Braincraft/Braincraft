@@ -31,12 +31,16 @@ int Bot::brainDo()
 	//switchItem(1);
 	thalamus->newState(currentState);
 
+	State s1 = new State();
+	State s2 = new State();
+
+	s1.load("/home/pclf/Documents/PFA/build/0_state.json");
+	s2.load("/home/pclf/Documents/PFA/build/1_state.json");
+
 	Hippocampus* hippo = new Hippocampus();
-	State stateBis = currentState;
-	stateBis[IDX_SENSATION][IDX_VITAL][IDX_FOOD] = 0.3;
- 	stateBis[IDX_WORLD] = "worldy";
-	std::cout << "dist 1 " << hippo->distance(currentState,stateBis) << std::endl;
-	std::cout << "dist 2 " << hippo->levenshteinStateDistance(currentState,stateBis) << std::endl;
+	
+	std::cout << hippo->distance(s1,s2) << std::endl;
+
 	Bot::nTour++;
 	return 1;
 }
