@@ -165,11 +165,6 @@ double Hippocampus::levenshteinStateDistance(State& s1, State& s2)
   return (double)prevCol[len2];
 }
 
-/*This function calculates recursively the distance between two states, element by element. 
-Elements are either states, booleans, doubles, or strings. 
-It ignores the location of the bot, because it is not relevant.
-Return : Distance in double. */
-
 /**
  * @brief FR : Calcul la distance entre deux Etat de manière récursive.
  * @details FR : Cette fonction parcours récursivement les deux états afin de comparer un à un les éléments des deux états. Lorsqu'un élément est manquant, la distance est incrémenté de 5. La distance entre deux booléens ou deux valeurs numériques est égale à leur différence. Pour les chaines de caractère, on utilise la distance de Levenstein. On ignore les champs "Location" des états du bot car il ne sont pas pertinent.

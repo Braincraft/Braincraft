@@ -1,9 +1,21 @@
+/**
+ * @file Hippocampus.hpp
+ * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquel on va sauvegarder tous les états successifs par lesquels le bot est passé. Les actions effectué à chaque états sont aussi sauvegarder dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaire au moyen d’une fonction de distance.
+ * EN : 
+ * @author BraincraftTeam
+ */
+
+
 #pragma once
 #include <iostream>
 #include <list>
 #include <vector>
 class State;
 
+/**
+ * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquel on va sauvegarder tous les états successifs par lesquels le bot est passé. Les actions effectué à chaque états sont aussi sauvegarder dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaire au moyen d’une fonction de distance.
+ * EN :
+ */
 class Hippocampus
 {
 	static const char oxygen_color = 0;

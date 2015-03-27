@@ -1,3 +1,10 @@
+/**
+ * @file Amygdala.cpp
+ * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
+ * EN :
+ * @author BraincraftTeam
+ */
+
 #include "Amygdala.hpp"
 #include <iostream>
 #include "config.hpp"
@@ -6,6 +13,9 @@
 #define HUNGRY 0.8
 #define DROWNING 1
 
+/**
+ * @brief FR : Constructeur / EN : Constructor
+ */
 Amygdala::Amygdala():dangerousBlock(), isFood(), dangerousEntity()
 {
 	std::cerr << "Create Amygdala" << std::endl;
@@ -28,6 +38,11 @@ Amygdala::Amygdala():dangerousBlock(), isFood(), dangerousEntity()
 	interrestingEntity.insert(92);
 }
 
+/**
+ * @brief FR : Génère une action réflexe. / EN :
+ * @param state FR : Etat actuel / EN : Current state.
+ * @return FR : Action à effectuer.
+ */
 State *Amygdala::isCritical(State & state)
 {
 	int i;
@@ -73,6 +88,12 @@ State *Amygdala::isCritical(State & state)
 	return nullptr;
 }
 
+/**
+ * @brief FR : Essaye de manger. / EN : Try to Eat.
+ * @param state FR : Etat actuel / EN : Current state
+ * @param reflex FR : Résultat / EN : Result
+ * @return FR : Réussite / EN : Success
+ */
 bool Amygdala::tryToEat(State & state, State* &reflex)
 {
 	int i = 0;
@@ -96,6 +117,15 @@ bool Amygdala::tryToEat(State & state, State* &reflex)
 	return false;
 }
 
+/**
+ * @brief FR : Détecte un élément dans l'environnement à l'aide d'une liste d'élément connus. / EN :
+ * @param state FR : Etat actuel / EN : Current state 
+ * @param x FR : Position x du résultat
+ * @param y FR : Position y du résultat
+ * @param z FR : Position z du résultat
+ * @param list FR : Liste de référence pour les éléments à rechercher / EN :
+ * @return FR : True si la fonction trouve un élément. / EN :
+ */
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z, std::set < int >const &list) const
 {
 	//check for members of the list in the state
@@ -116,12 +146,30 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 	return false;
 }
 
+/**
+ * @brief FR : Détecte des éléments intéressants dans l'environnement. / EN :
+ * @param state FR : Etat actuel / EN : Current state 
+ * @param x FR : Position x du résultat / EN :
+ * @param y FR : Position y du résultat / EN :
+ * @param z FR : Position z du résultat / EN :
+ * @return FR : True si un élément a été trouvé. / EN :
+ */
 bool Amygdala::isThereInterrestingStuff(State & state, double &x, double &y, double &z)
 {
 	return isThereDangerousStuff(state[IDX_SENSATION][IDX_TOUCH][IDX_ENTITIES], x, y, z, interrestingEntity) 
 			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_NEARBY][IDX_ENTITIES], x, y, z, interrestingEntity) 
 			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_ENTITIES], x, y, z, interrestingEntity);
 }
+
+
+/**
+ * @brief FR : Détecte des éléments dangereux dans l'environnement. / EN :
+ * @param state FR : Etat actuel / EN : Current state 
+ * @param x FR : Position x du résultat / EN :
+ * @param y FR : Position y du résultat / EN :
+ * @param z FR : Position z du résultat / EN :
+ * @return FR : True si un élément a été trouvé. / EN :
+ */
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z)
 {
 	return  //check hostiles entityies
@@ -134,6 +182,14 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 			|| isThereDangerousStuff(state[IDX_SENSATION][IDX_VISION][IDX_BLOCKS], x, y, z, dangerousBlock);
 }
 
+/**
+ * @brief FR : Cette fonction génère una action de fuite d'une position donnée. / EN :
+ * @param state FR : Etat actuel / EN : Current state 
+ * @param x FR : Position x_foe de l'élément dangereux / EN :
+ * @param y FR : Position y_foe de l'élément dangereux / EN :
+ * @param z FR : Position z_foe de l'élément dangereux / EN :
+ * @return FR : Action de fuite / EN :
+ */
 State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_foe)
 {								//TODO where will it goes if it's over lava
 	State & reflex = *(new State());
@@ -193,6 +249,15 @@ State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_fo
 	printf("runAway foe(%f, %f) me(%f, %f) obj(%f, %f) theta(%f) yaw(%f) turn(%f)\n", x_foe, z_foe, x_me, z_me, x_object, z_object, theta, yaw, turn);
 	return reflex;
 }
+
+/**
+ * @brief FR : Génère une action afin de viser/s'approcher d'un ennemi / EN :
+ * @param state FR : Etat actuel / EN : Current state
+ * @param x_foe FR : Position x_foe de l'élément à viser / EN :
+ * @param y_foe FR : Position y_foe de l'élément à viser / EN :
+ * @param z_foe FR : Position z_foe de l'élément à viser / EN :
+ * @return FR : Action générée / EN :
+ */
 State & Amygdala::aim(State & state, double x_foe, double y_foe, double z_foe)
 {								//TODO where will it goes if it's over lava
 	State & reflex = *(new State());

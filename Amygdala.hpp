@@ -1,8 +1,20 @@
+/**
+ * @file Amygdala.hpp
+ * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
+ * EN :
+ * @author BraincraftTeam
+ */
+
 #pragma once
 #include <set>
 #include "Hypothalamus.hpp"
 class State;
 
+
+/**
+ * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
+ * EN :
+ */
 class Amygdala
 {
 	std::set < int >dangerousBlock;
