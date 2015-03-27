@@ -1,7 +1,7 @@
 /**
  * @file Hippocampus.cpp
- * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquel on va sauvegarder tous les états successifs par lesquels le bot est passé. Les actions effectué à chaque états sont aussi sauvegarder dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaire au moyen d’une fonction de distance.
- * EN : 
+ * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquelle tout les états successifs par lesquels le bot est passé seront sauvegardé. Les actions effectués à chaque état sont aussi sauvegardé dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaires au moyen d’une fonction de distance.
+ * EN :  The Hippocampus class matches the long term memory in which every successive state the bot went through is saved. Actions perform in each state are also saved in this class. This class also owns methods in order to look for similar states using a distance function.
  * @author BraincraftTeam
  */
 
@@ -41,7 +41,7 @@ Hippocampus::~Hippocampus()
 }
 
 /**
- * @brief FR : Efface la mémoire du bot. / EN : 
+ * @brief FR : Efface la mémoire du bot. / EN : Erases the bot's memory
  */
 void Hippocampus::alzheimer(void)
 {
@@ -54,9 +54,9 @@ void Hippocampus::alzheimer(void)
 }
 
 /**
- * @brief FR : Ajoute un état dans la mémoire ainsi qu'une action associé / EN : 
- * @param action FR : Action associée à l'état à ajouter / EN :
- * @param state FR : Etat à ajouter dans la mémoire / EN : 
+ * @brief FR : Ajoute un état dans la mémoire ainsi qu'une action associé / EN : Adds a state and a matching action in the memory
+ * @param action FR : Action associée à l'état à ajouter / EN : Matching action of the state to add
+ * @param state FR : Etat à ajouter dans la mémoire / EN : State to add 
  */
 void Hippocampus::addState(State& action, State& state)
 {
@@ -65,8 +65,8 @@ void Hippocampus::addState(State& action, State& state)
 }
 
 /**
- * @brief FR : Ajoute un état dans la mémoire et génère une action associée. / EN : 
- * @param state FR : Etat à ajouter dans la mémoire / EN : 
+ * @brief FR : Ajoute un état dans la mémoire et génère une action associée. / EN : Adds a state in the memory and generates a matching action
+ * @param state FR : Etat à ajouter dans la mémoire / EN : State to add 
  */
 State* Hippocampus::addState(State& state)
 {
@@ -80,9 +80,9 @@ State* Hippocampus::addState(State& state)
 }
 
 /**
- * @brief FR : Sauvegarde un état et une action dans la mémoire / EN :
- * @param action FR : Action à sauvegarder / EN : 
- * @param state FR : Etat à sauvegarder / EN : 
+ * @brief FR : Sauvegarde un état et une action dans la mémoire / EN : Saves a state and an action
+ * @param action FR : Action à sauvegarder / EN :   Action to save
+ * @param state FR : Etat à sauvegarder / EN : State to save
  */
 void Hippocampus::saveState(State& action, State& state)
 {
@@ -99,10 +99,10 @@ void Hippocampus::saveState(State& action, State& state)
 }
 
 /**
- * @brief FR : Génère une action associé à un état. La génération dépend des états déjà en mémoire. / EN :
- * @param action FR : Instance de l'action à générer / EN :
- * @param state FR : Etat à comparer avec ceux de la mémoire / EN :
- * @return FR : Booléen: True si la génération à réussi, False sinon. / EN :
+ * @brief FR : Génère une action associé à un état qui dépend des états déjà en mémoire. / EN : Generates an action matching a state depending on already saved states
+ * @param action FR : Instance de l'action à générer / EN : Instance of the action to generate
+ * @param state FR : Etat à comparer avec ceux de la mémoire / EN : State to compare to those already saved
+ * @return FR : Booléen: True si la génération à réussi, False sinon. / EN : True if generation suceeded, else False
  */
 bool Hippocampus::isThereWorryingStuff(State& action, State& state)
 {
@@ -123,9 +123,9 @@ bool Hippocampus::isThereWorryingStuff(State& action, State& state)
 }
 
 /**
- * @brief FR : Détecte les jauges d'un état qui ont une valeur critique. / EN :
- * @param state FR : Etat à vérifier / EN :
- * @return FR : Liste des jauges critiques / EN :
+ * @brief FR : Détecte les jauges d'un état qui ont une valeur critique. / EN : Spots critical gauges of a state
+ * @param state FR : Etat à vérifier / EN : State analyze
+ * @return FR : Liste des jauges critiques / EN : List of critical gauges
  */
 std::list<int> Hippocampus::getDangerousGauge(State& state)
 {
@@ -143,8 +143,8 @@ std::list<int> Hippocampus::getDangerousGauge(State& state)
 
 /**
  * @brief FR: Calcul la distance de Levenstein entre deux états considérés comme des chaines de caractères. / EN : This function calculates the Levenshtein's distance between two states considered as Strings.
- * @param s1 FR : Etat à comparer / EN :
- * @param s2 FR : Etat à comparer / EN :
+ * @param s1 FR : Etat à comparer / EN : State to compare
+ * @param s2 FR : Etat à comparer / EN : State to compare
  * @return FR : Distance / EN : Distance
 */
 double Hippocampus::levenshteinStateDistance(State& s1, State& s2)
@@ -166,10 +166,10 @@ double Hippocampus::levenshteinStateDistance(State& s1, State& s2)
 }
 
 /**
- * @brief FR : Calcul la distance entre deux Etat de manière récursive.
- * @details FR : Cette fonction parcours récursivement les deux états afin de comparer un à un les éléments des deux états. Lorsqu'un élément est manquant, la distance est incrémenté de 5. La distance entre deux booléens ou deux valeurs numériques est égale à leur différence. Pour les chaines de caractère, on utilise la distance de Levenstein. On ignore les champs "Location" des états du bot car il ne sont pas pertinent.
- * @param s1 FR : Etat à comparer / EN :
- * @param s2 FR : Etat à comparer / EN :
+ * @brief FR : Calcul la distance entre deux Etats de manière récursive. / EN : Calculates the distance between two states in a recursive way.
+ * @details FR : Cette fonction parcours récursivement les deux états afin de comparer un à un les éléments des deux états. Lorsqu'un élément est manquant, la distance est incrémenté de 5. La distance entre deux booléens ou deux valeurs numériques est égale à leur différence. Pour les chaines de caractère, on utilise la distance de Levenstein. On ignore les champs "Location" des états du bot car il ne sont pas pertinent. /EN : This function recursively runs through both states in other to compare one by one the elements from both states. If there is a missing element, the distance is increased by 5. The distance between 2 booleans or numeric values is equal to their difference. Levenstein's distance is used for strings. The location of the bot is ignore due to it's irrelevance.
+ * @param s1 FR : Etat à comparer / EN : State to compare
+ * @param s2 FR : Etat à comparer / EN : State to compare
  * @return FR : Distance / EN : Distance
  */
 double Hippocampus::distance(State& s1, State& s2) 
@@ -262,10 +262,10 @@ double Hippocampus::distance(State& s1, State& s2)
 }
 
 /**
- * @brief FR : Parcours la memory pour trouver un état coloré de couleur color et où l'instant suivant, la couleur n'est plus. / EN :
- * @param color FR : Couleur / EN :
- * @param sameColoredState FR : Emplacement du résultat / EN :
- * @param state FR : Etat à comparer / EN :
+ * @brief FR : Parcours la memoire pour trouver un état coloré de couleur color et où l'instant suivant, la couleur n'est plus. / EN : Runs through the memory in order to find a stated colored in color and uncolored just after
+ * @param color FR : Couleur / EN : Color
+ * @param sameColoredState FR : Emplacement du résultat / EN : Location of the resut
+ * @param state FR : Etat à comparer / EN : State to compare
  * @return FR : Réussite / EN : Success
  */
 bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sameColoredState, State& state)
@@ -299,9 +299,9 @@ bool Hippocampus::findNearColoredState(char color, std::pair<State*, State*>& sa
 }
 
 /**
- * @brief FR : Colore l'état en entrée. / EN :
- * @param state FR : Etat à colorer / EN :
- * @return FR : Triplet indiquant les jauges en baisse: (oxygen_color,hungry_color,energy_color). / EN :
+ * @brief FR : Colore l'état en entrée. / EN : Colors the state given
+ * @param state FR : Etat à colorer / EN : State to color
+ * @return FR : Triplet indiquant les jauges en baisse: (oxygen_color,hungry_color,energy_color). / EN : 3-tuple indicating the decreasing gauges :(oxygen_color,hungry_color,energy_color).
  */
 std::vector<bool> Hippocampus::colorate(State& state)
 {
@@ -312,11 +312,11 @@ std::vector<bool> Hippocampus::colorate(State& state)
 }
 
 /**
- * @brief FR : Colore l'état en entrée. / EN :
- * @details FR : La couleur est vraie si il y a eu une baisse de la jauge entre l'état previous et l'état state. / EN :
- * @param previous FR : Etat à comparer / EN :
- * @param state FR : Etat à colorer / EN :
- * @return FR : Triplet indiquant les jauges en baisse: (oxygen_color,hungry_color,energy_color). / EN :
+ * @brief FR : Colore l'état en entrée. / EN : Colors the state given
+ * @details FR : La couleur est vraie si il y a eu une baisse de la jauge entre l'état previous et l'état state. / EN : The color is true if the gauge decreased between the previous state and the state state
+ * @param previous FR : Etat à comparer / EN : State to compare
+ * @param state FR : Etat à colorer / EN : State to color
+ * @return FR : Triplet indiquant les jauges en baisse: (oxygen_color,hungry_color,energy_color). / EN : 3-tuple indicating the decreasing gauges :(oxygen_color,hungry_color,energy_color).
  */
 std::vector<bool> Hippocampus::colorate(State& previous, State& state)
 {
@@ -328,7 +328,7 @@ std::vector<bool> Hippocampus::colorate(State& previous, State& state)
 }
 
 /**
- * @brief FR : Génére une action aléatoire. (NON FONCTIONNELLE) / EN :
+ * @brief FR : Génére une action aléatoire. (NON FONCTIONNELLE) / EN : Generates random action (NOT FUNCTIONNAL)
  */
 void Hippocampus::randomizeAction(State& action)
 {
@@ -363,8 +363,8 @@ void Hippocampus::randomizeAction(State& action)
 }
 
 /**
- * @brief FR : Vérifie si le path existe. / EN :
- * @param path FR : Chemin à vérifier. / EN :
+ * @brief FR : Vérifie si le path existe. / EN : Checks if path exists
+ * @param path FR : Chemin à vérifier. / EN : Path to check
  * @return FR : Résultat / EN : Result
  */
 bool Hippocampus::dirExists(std::string const& path)
@@ -374,8 +374,8 @@ bool Hippocampus::dirExists(std::string const& path)
 
 
 /**
- * @brief FR : Vérifie si le path existe. / EN :
- * @param path FR : Chemin à vérifier. / EN :
+ * @brief FR : Vérifie si le path existe. / EN : Checks if path exists
+ * @param path FR : Chemin à vérifier. / EN : Path to check
  * @return FR : Résultat / EN : Result
  */
 bool Hippocampus::dirExists(const char *path)
