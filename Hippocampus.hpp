@@ -1,7 +1,7 @@
 /**
  * @file Hippocampus.hpp
- * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquel on va sauvegarder tous les états successifs par lesquels le bot est passé. Les actions effectué à chaque états sont aussi sauvegarder dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaire au moyen d’une fonction de distance.
- * EN : 
+ *  La classe Hippocampus correspond à la mémoire longue durée dans laquelle tout les états successifs par lesquels le bot est passé seront sauvegardé. Les actions effectués à chaque état sont aussi sauvegardé dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaires au moyen d’une fonction de distance.
+ * EN :  The Hippocampus class matches the long term memory in which every successive state the bot went through is saved. Actions perform in each state are also saved in this class. This class also owns methods in order to look for similar states using a distance function.
  * @author BraincraftTeam
  */
 
@@ -13,8 +13,8 @@
 class State;
 
 /**
- * @brief FR : La classe Hippocampus correspond à la mémoire longue durée dans laquel on va sauvegarder tous les états successifs par lesquels le bot est passé. Les actions effectué à chaque états sont aussi sauvegarder dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaire au moyen d’une fonction de distance.
- * EN :
+ * La classe Hippocampus correspond à la mémoire longue durée dans laquelle tout les états successifs par lesquels le bot est passé seront sauvegardé. Les actions effectués à chaque état sont aussi sauvegardé dans cette classe. Par ailleurs, cette classe dispose de méthodes pour chercher des états similaires au moyen d’une fonction de distance.
+ * EN :  The Hippocampus class matches the long term memory in which every successive state the bot went through is saved. Actions perform in each state are also saved in this class. This class also owns methods in order to look for similar states using a distance function.
  */
 class Hippocampus
 {
