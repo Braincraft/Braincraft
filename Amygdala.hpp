@@ -1,7 +1,7 @@
 /**
  * @file Amygdala.hpp
  * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
- * EN :
+ * EN :  The Amygdala class aims to extract important elements from the Minecraft environment and execute a matching action if possible.
  * @author BraincraftTeam
  */
 
@@ -13,7 +13,7 @@ class State;
 
 /**
  * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
- * EN :
+ * EN :  The Amygdala class aims to extract important elements from the Minecraft environment and execute a matching action if possible.
  */
 class Amygdala
 {
