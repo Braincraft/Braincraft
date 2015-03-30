@@ -1,7 +1,7 @@
 /**
  * @file Amygdala.cpp
- * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et d’exécuter une action associée si c’est possible.
- * EN :
+ * @brief FR : La classe Amygdala est destinée à repérer des éléments importants de l’environnement Minecraft et exécuter une action associée si possible.
+ * EN : The Amygdala class aims to extract important elements from the Minecraft environment and execute a matching action if possible.
  * @author BraincraftTeam
  */
 
@@ -39,9 +39,9 @@ Amygdala::Amygdala():dangerousBlock(), isFood(), dangerousEntity()
 }
 
 /**
- * @brief FR : Génère une action réflexe. / EN :
+ * @brief FR : Génère une action réflexe. / EN : Generates a reflex action
  * @param state FR : Etat actuel / EN : Current state.
- * @return FR : Action à effectuer.
+ * @return FR : Action à effectuer. / EN : Action to do
  */
 State *Amygdala::isCritical(State & state)
 {
@@ -89,7 +89,7 @@ State *Amygdala::isCritical(State & state)
 }
 
 /**
- * @brief FR : Essaye de manger. / EN : Try to Eat.
+ * @brief FR : Essaye de manger. / EN : Tries to Eat.
  * @param state FR : Etat actuel / EN : Current state
  * @param reflex FR : Résultat / EN : Result
  * @return FR : Réussite / EN : Success
@@ -118,13 +118,13 @@ bool Amygdala::tryToEat(State & state, State* &reflex)
 }
 
 /**
- * @brief FR : Détecte un élément dans l'environnement à l'aide d'une liste d'élément connus. / EN :
+ * @brief FR : Détecte un élément dans l'environnement à l'aide d'une liste d'élément connus. / EN : Finds an element in the environment using a list of known elements.
  * @param state FR : Etat actuel / EN : Current state 
- * @param x FR : Position x du résultat
- * @param y FR : Position y du résultat
- * @param z FR : Position z du résultat
- * @param list FR : Liste de référence pour les éléments à rechercher / EN :
- * @return FR : True si la fonction trouve un élément. / EN :
+ * @param x FR : Position x du résultat / EN : x coordinate of the result
+ * @param y FR : Position y du résultat / EN : y coordinate of the result
+ * @param z FR : Position z du résultat / EN : z coordinate of the result
+ * @param list FR : Liste de référence pour les éléments à rechercher / EN : Reference list 
+ * @return FR : True si la fonction trouve un élément. / EN : True if an element was found
  */
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z, std::set < int >const &list) const
 {
@@ -147,12 +147,12 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 }
 
 /**
- * @brief FR : Détecte des éléments intéressants dans l'environnement. / EN :
+ * @brief FR : Détecte des éléments intéressants dans l'environnement. / EN : Finds interesting elements of the environment
  * @param state FR : Etat actuel / EN : Current state 
- * @param x FR : Position x du résultat / EN :
- * @param y FR : Position y du résultat / EN :
- * @param z FR : Position z du résultat / EN :
- * @return FR : True si un élément a été trouvé. / EN :
+ * @param x FR : Position x du résultat / EN : x coordinate of the result
+ * @param y FR : Position y du résultat / EN : y coordinate of the result
+ * @param z FR : Position z du résultat / EN : z coordinate of the result
+ * @return FR : True si un élément a été trouvé. / EN : True if an element was found
  */
 bool Amygdala::isThereInterrestingStuff(State & state, double &x, double &y, double &z)
 {
@@ -163,12 +163,12 @@ bool Amygdala::isThereInterrestingStuff(State & state, double &x, double &y, dou
 
 
 /**
- * @brief FR : Détecte des éléments dangereux dans l'environnement. / EN :
+ * @brief FR : Détecte des éléments dangereux dans l'environnement. / EN : Finds dangerous elements of the environment
  * @param state FR : Etat actuel / EN : Current state 
- * @param x FR : Position x du résultat / EN :
- * @param y FR : Position y du résultat / EN :
- * @param z FR : Position z du résultat / EN :
- * @return FR : True si un élément a été trouvé. / EN :
+ * @param x FR : Position x du résultat / EN : x coordinate of the result
+ * @param y FR : Position y du résultat / EN : y coordinate of the result
+ * @param z FR : Position z du résultat / EN : z coordinate of the result
+ * @return FR : True si un élément a été trouvé. / EN : True if an element was found
  */
 bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double &z)
 {
@@ -183,12 +183,12 @@ bool Amygdala::isThereDangerousStuff(State & state, double &x, double &y, double
 }
 
 /**
- * @brief FR : Cette fonction génère una action de fuite d'une position donnée. / EN :
+ * @brief FR : Cette fonction génère une action de fuite d'une position donnée. / EN : Generates a fleeing action from a given position
  * @param state FR : Etat actuel / EN : Current state 
- * @param x FR : Position x_foe de l'élément dangereux / EN :
- * @param y FR : Position y_foe de l'élément dangereux / EN :
- * @param z FR : Position z_foe de l'élément dangereux / EN :
- * @return FR : Action de fuite / EN :
+ * @param x FR : Position x_foe de l'élément dangereux / EN : x coordinate of the dangerous element
+ * @param y FR : Position y_foe de l'élément dangereux / EN : x coordinate of the dangerous element
+ * @param z FR : Position z_foe de l'élément dangereux / EN : x coordinate of the dangerous element
+ * @return FR : Action de fuite / EN : fleeing action
  */
 State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_foe)
 {								//TODO where will it goes if it's over lava
@@ -251,12 +251,12 @@ State & Amygdala::runAway(State & state, double x_foe, double y_foe, double z_fo
 }
 
 /**
- * @brief FR : Génère une action afin de viser/s'approcher d'un ennemi / EN :
+ * @brief FR : Génère une action afin de viser/s'approcher d'un ennemi / EN : Generates an action in order to aim/get closer to a foe
  * @param state FR : Etat actuel / EN : Current state
- * @param x_foe FR : Position x_foe de l'élément à viser / EN :
- * @param y_foe FR : Position y_foe de l'élément à viser / EN :
- * @param z_foe FR : Position z_foe de l'élément à viser / EN :
- * @return FR : Action générée / EN :
+ * @param x_foe FR : Position x_foe de l'élément à viser / EN : x coordinate of element to aim
+ * @param y_foe FR : Position y_foe de l'élément à viser / EN : y coordinate of element to aim
+ * @param z_foe FR : Position z_foe de l'élément à viser / EN : z coordinate of element to aim
+ * @return FR : Action générée / EN : Aiming action
  */
 State & Amygdala::aim(State & state, double x_foe, double y_foe, double z_foe)
 {								//TODO where will it goes if it's over lava
